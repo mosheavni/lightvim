@@ -1,0 +1,6 @@
+require 'core.options'
+require 'core.keymaps'
+require 'core.packs'
+print 'hi'
+require 'core.lsp'
+require 'core.statusline'
