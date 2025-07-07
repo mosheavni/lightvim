@@ -1,6 +1,6 @@
 # LightVim
 
-> LightVim is a Neovim config.
+LightVim is a Neovim config.
 
 ## Requirement
 
