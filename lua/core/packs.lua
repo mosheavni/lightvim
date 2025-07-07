@@ -4,6 +4,7 @@ vim.pack.add {
   'https://github.com/folke/lazydev.nvim',
   'https://github.com/echasnovski/mini.surround',
   'https://github.com/nvim-lualine/lualine.nvim',
+  'https://github.com/nvim-tree/nvim-web-devicons',
 }
 require('mini.surround').setup {
   mappings = {

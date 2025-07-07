@@ -28,7 +28,7 @@ map('n', '[q', ':cprev<cr>zz', { remap = false, silent = true })
 map('t', '<Esc>', [[<C-\><C-n>]], { remap = false, desc = 'Exit terminal mode' })
 
 -- Copy file path to clipboard
-map('n', '<leader>cfp', [[:let @+ = expand('%')<cr>:echo   "Copied relative file path " . expand('%')<cr>]], { remap = false, silent = true })
+map('n', '<leader>cfp', [[:let @+ = expand('%')<cr>:echo "Copied relative file path " . expand('%')<cr>]], { remap = false, silent = true })
 map('n', '<leader>cfa', [[:let @+ = expand('%:p')<cr>:echo "Copied full file path " . expand('%:p')<cr>]], { remap = false, silent = true })
 map('n', '<leader>cfd', [[:let @+ = expand('%:p:h')<cr>:echo "Copied file directory path " . expand('%:p:h')<cr>]], { remap = false, silent = true })
 map('n', '<leader>cfn', [[:let @+ = expand('%:t')<cr>:echo "Copied file directory path " . expand('%:t')<cr>]], { remap = false, silent = true })

@@ -14,10 +14,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    -- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
-    if client:supports_method 'textDocument/completion' then
-      vim.lsp.completion.enable(true, client.id, args.buf, { autotrigger = true })
-    end
+    require 'core.completion'(client, args.buf)
 
     -- Auto-format ("lint") on save.
     -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
@@ -38,3 +35,4 @@ vim.api.nvim_create_autocmd('LspAttach', {
 vim.lsp.enable 'gopls'
 vim.lsp.enable 'lua_ls'
 vim.lsp.enable 'ts_ls'
+vim.lsp.enable 'yaml_ls'
