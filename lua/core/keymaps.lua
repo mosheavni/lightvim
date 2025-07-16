@@ -28,10 +28,30 @@ map('n', '[q', ':cprev<cr>zz', { remap = false, silent = true })
 map('t', '<Esc>', [[<C-\><C-n>]], { remap = false, desc = 'Exit terminal mode' })
 
 -- Copy file path to clipboard
-map('n', '<leader>cfp', [[:let @+ = expand('%')<cr>:echo "Copied relative file path " . expand('%')<cr>]], { remap = false, silent = true })
-map('n', '<leader>cfa', [[:let @+ = expand('%:p')<cr>:echo "Copied full file path " . expand('%:p')<cr>]], { remap = false, silent = true })
-map('n', '<leader>cfd', [[:let @+ = expand('%:p:h')<cr>:echo "Copied file directory path " . expand('%:p:h')<cr>]], { remap = false, silent = true })
-map('n', '<leader>cfn', [[:let @+ = expand('%:t')<cr>:echo "Copied file directory path " . expand('%:t')<cr>]], { remap = false, silent = true })
+map(
+  'n',
+  '<leader>cfp',
+  [[:let @+ = expand('%')<cr>:echo "Copied relative file path " . expand('%')<cr>]],
+  { remap = false, silent = true }
+)
+map(
+  'n',
+  '<leader>cfa',
+  [[:let @+ = expand('%:p')<cr>:echo "Copied full file path " . expand('%:p')<cr>]],
+  { remap = false, silent = true }
+)
+map(
+  'n',
+  '<leader>cfd',
+  [[:let @+ = expand('%:p:h')<cr>:echo "Copied file directory path " . expand('%:p:h')<cr>]],
+  { remap = false, silent = true }
+)
+map(
+  'n',
+  '<leader>cfn',
+  [[:let @+ = expand('%:t')<cr>:echo "Copied file directory path " . expand('%:t')<cr>]],
+  { remap = false, silent = true }
+)
 
 -- Copy and paste to/from system clipboard
 map('v', 'cp', '"+y', { desc = 'Copy to system clipboard' })
@@ -48,7 +68,12 @@ map('n', '<C-u>', '<C-u>zz', { remap = false, desc = 'Scroll half page up and ce
 map('n', '<C-d>', '<C-d>zz', { remap = false, desc = 'Scroll half page down and center' })
 
 -- Change working directory based on open file
-map('n', '<leader>cd', ':cd %:p:h<CR>:pwd<CR>', { remap = false, silent = true, desc = 'Change directory to current file' })
+map(
+  'n',
+  '<leader>cd',
+  ':cd %:p:h<CR>:pwd<CR>',
+  { remap = false, silent = true, desc = 'Change directory to current file' }
+)
 
 vim.api.nvim_create_user_command('DiffWithSaved', function()
   -- Get start buffer
