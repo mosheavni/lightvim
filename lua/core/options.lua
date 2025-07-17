@@ -1,14 +1,11 @@
--- Performance: Defer filetype detection for faster startup (if not set elsewhere)
-vim.loader.enable()
-vim.cmd [[colorscheme sorbet]]
-vim.g.mapleader = ' '
+vim.cmd [[colorscheme default]]
 
 -- general options
 vim.o.completeopt = 'menu,menuone,noselect,popup,fuzzy' -- modern completion menu
 
-vim.o.foldenable = true -- enable fold
-vim.o.foldlevel = 99 -- start editing with all folds opened
-vim.o.foldmethod = 'expr' -- use tree-sitter for folding method
+vim.o.foldenable = true                                 -- enable fold
+vim.o.foldlevel = 99                                    -- start editing with all folds opened
+vim.o.foldmethod = 'expr'                               -- use tree-sitter for folding method
 vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.foldtext = 'substitute(getline(v:foldstart),"\t",repeat(" ",&tabstop),"g")."...".trim(getline(v:foldend))'
 
@@ -75,10 +72,11 @@ vim.o.smarttab = true
 vim.o.expandtab = true
 vim.opt.indentkeys:remove '0#'
 vim.opt.indentkeys:remove '<:>'
+vim.o.winborder = 'rounded'
 
-vim.o.pumheight = 10 -- max height of completion menu
+vim.o.pumheight = 10  -- max height of completion menu
 
-vim.o.list = true -- use special characters to represent things like tabs or trailing spaces
+vim.o.list = true     -- use special characters to represent things like tabs or trailing spaces
 vim.opt.listchars = { -- NOTE: using `vim.opt` instead of `vim.o` to pass rich object
   tab = '▏ ',
   trail = '·',
@@ -87,28 +85,3 @@ vim.opt.listchars = { -- NOTE: using `vim.opt` instead of `vim.o` to pass rich o
 }
 
 vim.opt.diffopt:append 'linematch:60' -- second stage diff to align lines
-
-vim.g.mapleader = vim.keycode '<space>'
-vim.g.maplocalleader = vim.keycode '<cr>'
-
--- remove netrw banner for cleaner looking
-vim.g.netrw_banner = 0
-
--- UI/UX: Highlight on yank
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank { timeout = 200 }
-  end,
-  desc = 'Highlight selection on yank',
-})
-
--- Jump to last edit position when reopening file
-vim.api.nvim_create_autocmd('BufReadPost', {
-  callback = function()
-    local mark = vim.api.nvim_buf_get_mark(0, '"')
-    if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(0) then
-      pcall(vim.api.nvim_win_set_cursor, 0, mark)
-    end
-  end,
-  desc = 'Return to last edit pos after reopen',
-})

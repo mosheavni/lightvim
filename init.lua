@@ -1,5 +1,7 @@
+require 'core.globals'
 require 'core.options'
 require 'core.keymaps'
+require 'core.autocmd'
 require 'core.lsp'
 require 'core.statusline'
 require 'core.packs'

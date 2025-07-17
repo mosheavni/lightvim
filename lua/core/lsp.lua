@@ -30,6 +30,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
   end,
+
+  -- diagnostic
+  vim.diagnostic.config {
+    virtual_lines = {
+      current_line = true,
+    },
+  },
 })
 
 -- enable configured language servers
