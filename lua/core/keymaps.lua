@@ -11,14 +11,27 @@ map('v', 'L', '$', { remap = false, desc = 'Move view to the right' })
 map('n', 'H', '5zh', { remap = false, desc = 'Move view to the left' })
 map('v', 'H', '0', { remap = false, desc = 'Move view to the left' })
 
--- Scrolling centralized
-map('n', '<C-u>', '<C-u>zz', { remap = false, desc = 'Scroll half page up and center' })
-map('n', '<C-d>', '<C-d>zz', { remap = false, desc = 'Scroll half page down and center' })
+-- Center screen when jumping
+map('n', 'n', 'nzzzv', { desc = 'Next search result (centered)' })
+map('n', 'N', 'Nzzzv', { desc = 'Previous search result (centered)' })
+map('n', '<C-d>', '<C-d>zz', { desc = 'Half page down (centered)' })
+map('n', '<C-u>', '<C-u>zz', { desc = 'Half page up (centered)' })
 
 -- Visual Mode
 -- indent/unindent visual mode selection with tab/shift+tab
 map('v', '<tab>', '>gv', { desc = 'Indent selected text' })
 map('v', '<s-tab>', '<gv', { desc = 'Unindent selected text' })
+
+-- Indent block
+vim.cmd [[
+function! g:__align_based_on_indent(_)
+  normal! v%koj$>
+endfunction
+]]
+map('n', '<leader>gt', function()
+  vim.go.operatorfunc = '__align_based_on_indent'
+  return 'g@l'
+end, { expr = true })
 
 -- Windows
 map('n', '<c-w>v', ':vnew<cr>', { remap = false, silent = true, desc = 'New buffer vertically split' })
@@ -28,6 +41,12 @@ map('n', '<Left>', '<C-w>h', { remap = true, desc = 'Go to Left Window' })
 map('n', '<Down>', '<C-w>j', { remap = true, desc = 'Go to Lower Window' })
 map('n', '<Up>', '<C-w>k', { remap = true, desc = 'Go to Upper Window' })
 map('n', '<Right>', '<C-w>l', { remap = true, desc = 'Go to Right Window' })
+
+-- Resize Windows
+map('n', '<C-Up>', ':resize +2<CR>', { desc = 'Increase window height' })
+map('n', '<C-Down>', ':resize -2<CR>', { desc = 'Decrease window height' })
+map('n', '<C-Left>', ':vertical resize -2<CR>', { desc = 'Decrease window width' })
+map('n', '<C-Right>', ':vertical resize +2<CR>', { desc = 'Increase window width' })
 
 -- Quickfix
 map('n', ']q', ':cnext<cr>zz', { remap = false, silent = true, desc = 'Next quickfix item' })
@@ -44,24 +63,21 @@ map(
   [[:let @+ = expand('%')<cr>:echo "Copied relative file path " . expand('%')<cr>]],
   { remap = false, silent = true, desc = 'Copy relative file path' }
 )
-map(
-  'n',
-  '<leader>cfa',
-  [[:let @+ = expand('%:p')<cr>:echo "Copied full file path " . expand('%:p')<cr>]],
-  { remap = false, silent = true, desc = 'Copy absolute file path' }
-)
-map(
-  'n',
-  '<leader>cfd',
-  [[:let @+ = expand('%:p:h')<cr>:echo "Copied file directory path " . expand('%:p:h')<cr>]],
-  { remap = false, silent = true, desc = 'Copy file directory path' }
-)
-map(
-  'n',
-  '<leader>cfn',
-  [[:let @+ = expand('%:t')<cr>:echo "Copied file directory path " . expand('%:t')<cr>]],
-  { remap = false, silent = true, desc = 'Copy file name' }
-)
+map('n', '<leader>cfa', function()
+  local file_path = vim.fn.expand '%:p'
+  vim.fn.setreg('+', file_path)
+  print('Copied full file path  ' .. file_path)
+end, { remap = false, silent = true, desc = 'Copy absolute file path' })
+map('n', '<leader>cfd', function()
+  local dir_path = vim.fn.expand '%:p:h'
+  vim.fn.setreg('+', dir_path)
+  print('Copied file directory path ' .. dir_path)
+end, { remap = false, silent = true, desc = 'Copy file directory path' })
+map('n', '<leader>cfn', function()
+  local file_name = vim.fn.expand '%:t'
+  vim.fn.setreg('+', file_name)
+  print('Copied file name ' .. file_name)
+end, { remap = false, silent = true, desc = 'Copy file name' })
 
 -- Change working directory based on open file
 map(
@@ -105,4 +121,3 @@ vim.api.nvim_create_user_command('DiffWithSaved', function()
 end, {})
 
 map('n', '<leader>ds', ':DiffWithSaved<cr>', { remap = false, silent = true, desc = 'Diff with saved version' })
-

@@ -82,7 +82,6 @@ vim.o.undofile = true
 vim.o.undodir = vim.fn.stdpath 'state' .. '/undo' -- Undo directory
 vim.o.undolevels = 10000
 vim.o.shada = [[!,'1000,s10000,h]]
-vim.opt.wildignore:append { '**/node_modules/**', '.hg', '.git', '.svn', '*.DS_Store', '*.pyc' }
 vim.opt.path:append { '**' }
 
 -- Create undo directory if it doesn't exist
@@ -99,6 +98,7 @@ vim.o.updatetime = 300
 -- Command & Wildmenu
 vim.o.wildmenu = true
 vim.opt.wildmode = { 'longest:full', 'full' }
+vim.opt.wildignore:append { '**/node_modules/**', '.hg', '.git', '.svn', '*.DS_Store', '*.pyc' }
 vim.o.previewheight = 15
 vim.o.history = 10000
 

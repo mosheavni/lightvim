@@ -1,5 +1,6 @@
 require 'core.globals'
 require 'core.options'
+require 'core.terminal'
 require 'core.keymaps'
 require 'core.autocmd'
 require 'core.lsp'
