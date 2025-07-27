@@ -51,3 +51,14 @@ vim.lsp.enable 'gopls'
 vim.lsp.enable 'lua_ls'
 vim.lsp.enable 'ts_ls'
 vim.lsp.enable 'yaml_ls'
+
+vim.api.nvim_create_user_command('LspInfo', function()
+  local clients = vim.lsp.get_clients { bufnr = 0 }
+  if #clients == 0 then
+    print 'No LSP clients attached to current buffer'
+  else
+    for _, client in ipairs(clients) do
+      print('LSP: ' .. client.name .. ' (ID: ' .. client.id .. ')')
+    end
+  end
+end, { desc = 'Show LSP client info' })
