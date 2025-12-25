@@ -1,14 +1,3 @@
----Utility for keymap creation.
----@param lhs string
----@param rhs string|function
----@param opts string|table
----@param mode? string|string[]
-local function keymap(lhs, rhs, opts, mode)
-  opts = type(opts) == 'string' and { desc = opts } or vim.tbl_extend('error', opts --[[@as table]], { buffer = bufnr })
-  mode = mode or 'n'
-  vim.keymap.set(mode, lhs, rhs, opts)
-end
-
 ---For replacing certain <C-x>... keymaps.
 ---@param keys string
 local function feedkeys(keys)
@@ -30,19 +19,19 @@ return function(client, bufnr)
   vim.lsp.completion.enable(true, client.id, bufnr, { autotrigger = true })
 
   -- Use enter to accept completions.
-  keymap('<cr>', function()
+  vim.keymap.set('i', '<cr>', function()
     return pumvisible() and '<C-y>' or '<cr>'
-  end, { expr = true }, 'i')
+  end, { expr = true })
 
   -- Use slash to dismiss the completion menu.
-  keymap('/', function()
+  vim.keymap.set('i', '/', function()
     return pumvisible() and '<C-e>' or '/'
-  end, { expr = true }, 'i')
+  end, { expr = true })
 
   -- Use <C-n> to navigate to the next completion or:
   -- - Trigger LSP completion.
   -- - If there's no one, fallback to vanilla omnifunc.
-  keymap('<C-n>', function()
+  vim.keymap.set('i', '<C-n>', function()
     if pumvisible() then
       feedkeys '<C-n>'
     else
@@ -56,15 +45,15 @@ return function(client, bufnr)
         end
       end
     end
-  end, 'Trigger/select next completion', 'i')
+  end, { desc = 'Trigger/select next completion' })
 
   -- Buffer completions.
-  keymap('<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' }, 'i')
+  vim.keymap.set('i', '<C-u>', '<C-x><C-n>', { desc = 'Buffer completions' })
 
   -- Use <Tab> to accept a suggestion, navigate between snippet tabstops,
   -- or select the next completion.
   -- Do something similar with <S-Tab>.
-  keymap('<Tab>', function()
+  vim.keymap.set({ 'i', 's' }, '<Tab>', function()
     if pumvisible() then
       feedkeys '<C-n>'
     elseif vim.snippet.active { direction = 1 } then
@@ -72,8 +61,8 @@ return function(client, bufnr)
     else
       feedkeys '<Tab>'
     end
-  end, {}, { 'i', 's' })
-  keymap('<S-Tab>', function()
+  end, {})
+  vim.keymap.set({ 'i', 's' }, '<S-Tab>', function()
     if pumvisible() then
       feedkeys '<C-p>'
     elseif vim.snippet.active { direction = -1 } then
@@ -81,8 +70,8 @@ return function(client, bufnr)
     else
       feedkeys '<S-Tab>'
     end
-  end, {}, { 'i', 's' })
+  end, {})
 
   -- Inside a snippet, use backspace to remove the placeholder.
-  keymap('<BS>', '<C-o>s', {}, 's')
+  vim.keymap.set('s', '<BS>', '<C-o>s', {})
 end

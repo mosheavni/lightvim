@@ -56,13 +56,11 @@ map('n', '[q', ':cprev<cr>zz', { remap = false, silent = true, desc = 'Previous 
 map('t', '<Esc>', [[<C-\><C-n>]], { remap = false, desc = 'Exit terminal mode' })
 
 -- File Operations
--- Copy file path to clipboard
-map(
-  'n',
-  '<leader>cfp',
-  [[:let @+ = expand('%')<cr>:echo "Copied relative file path " . expand('%')<cr>]],
-  { remap = false, silent = true, desc = 'Copy relative file path' }
-)
+map('n', '<leader>cfp', function()
+  local rel_path = vim.fn.expand '%'
+  vim.fn.setreg('+', rel_path)
+  print('Copied relative file path ' .. rel_path)
+end, { remap = false, silent = true, desc = 'Copy relative file path' })
 map('n', '<leader>cfa', function()
   local file_path = vim.fn.expand '%:p'
   vim.fn.setreg('+', file_path)

@@ -12,8 +12,14 @@ Just clone it to `~/.config/lightvim` and use with `NVIM_APPNAME` environment va
 
 ```sh
 # 1. clone it
-git clone https://github.com/boltlessengineer/lightvim.git ~/.config/lightvim
+git clone https://github.com/mosheavni/lightvim.git ~/.config/lightvim
 
 # 2. use it with NVIM_APPNAME
 NVIM_APPNAME=lightvim nvim
 ```
+
+## TODOs
+
+- [ ] Add mini pick
+- [ ] Add Treesitter
+- [ ] verify completions

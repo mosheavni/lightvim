@@ -38,15 +38,15 @@ vim.o.splitright = true
 vim.o.equalalways = true
 
 -- Completion
+vim.o.autocomplete = true
+vim.o.complete = 'o,.,w,b,u'
 vim.o.completeopt = 'menu,menuone,noselect,noinsert,popup,fuzzy' -- modern completion menu
 vim.o.pumheight = 10 -- max height of completion menu
 
 -- Folding
 vim.o.foldenable = true -- enable fold
 vim.o.foldlevel = 99 -- start editing with all folds opened
-vim.o.foldmethod = 'expr' -- use tree-sitter for folding method
-vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-vim.o.foldtext = 'substitute(getline(v:foldstart),"\t",repeat(" ",&tabstop),"g")."...".trim(getline(v:foldend))'
+vim.o.foldmethod = 'manual' -- use tree-sitter for folding method
 
 -- Indentation
 vim.o.breakindent = true
