@@ -108,7 +108,7 @@ return {
     data = {
       event = 'BufReadPost',
       config = function()
-        require('mini.operators').setup {}
+        require('mini.operators').setup { exchange = { prefix = '' } }
       end,
     },
   },

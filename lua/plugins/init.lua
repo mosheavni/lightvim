@@ -6,6 +6,7 @@ local plugins = {
   require 'plugins.mini',
   require 'plugins.treesitter',
   require 'plugins.color',
+  require 'plugins.gitsigns',
   -- Add more plugins here or create separate files
   -- Each file can return:
   --   - Single plugin: ---@type PluginSpec
