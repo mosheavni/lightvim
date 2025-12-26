@@ -14,7 +14,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    require 'core.completion'(client, args.buf)
+    require 'core.completion' (client, args.buf)
 
     -- Auto-format ("lint") on save.
     -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
@@ -35,6 +35,21 @@ vim.api.nvim_create_autocmd('LspAttach', {
         buffer = args.buf,
         desc = 'Format buffer with LSP',
       })
+    else
+      -- Fallback to formatprg if LSP doesn't support formatting
+      local formatprg = vim.bo[args.buf].formatprg
+      if formatprg ~= '' then
+        vim.api.nvim_create_autocmd('BufWritePre', {
+          group = vim.api.nvim_create_augroup('BufFmtPrg', { clear = true }),
+          buffer = args.buf,
+          callback = function()
+            local view = vim.fn.winsaveview()
+            vim.cmd('silent! normal! gggqG')
+            vim.fn.winrestview(view)
+            vim.notify('Formatted via formatprg', vim.log.levels.INFO)
+          end,
+        })
+      end
     end
   end,
 
@@ -48,9 +63,9 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- enable configured language servers
 -- you can find server configurations from lsp/*.lua files
-vim.lsp.enable 'gopls'
+vim.lsp.enable 'jsonls'
 vim.lsp.enable 'lua_ls'
-vim.lsp.enable 'ts_ls'
+vim.lsp.enable 'marksman'
 vim.lsp.enable 'yaml_ls'
 
 vim.api.nvim_create_user_command('LspInfo', function()

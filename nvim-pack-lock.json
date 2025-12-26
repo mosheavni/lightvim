@@ -12,6 +12,10 @@
       "rev": "bfb26d9072670c3aaefab0f53024b2f3729c8083",
       "src": "https://github.com/nvim-mini/mini.ai"
     },
+    "mini.extra": {
+      "rev": "673633b97b64292c82d473ea2bd31b767dbe3907",
+      "src": "https://github.com/nvim-mini/mini.extra"
+    },
     "mini.indentscope": {
       "rev": "0308f949f31769e509696af5d5f91cebb2159c69",
       "src": "https://github.com/nvim-mini/mini.indentscope"
@@ -56,6 +60,10 @@
     "rose-pine": {
       "rev": "cf2a288696b03d0934da713d66c6d71557b5c997",
       "src": "https://github.com/rose-pine/neovim"
+    },
+    "schemastore.nvim": {
+      "rev": "5ed01fc84e587e0883e7d04122684d768eb76bbc",
+      "src": "https://github.com/b0o/schemastore.nvim"
     },
     "vim-fugitive": {
       "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",

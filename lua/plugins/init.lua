@@ -8,7 +8,7 @@ local plugins = {
   require 'plugins.color',
   require 'plugins.fugitive',
   require 'plugins.gitsigns',
-  require 'plugins.oil'
+  { src = 'https://github.com/b0o/schemastore.nvim' },
   -- Add more plugins here or create separate files
   -- Each file can return:
   --   - Single plugin: ---@type PluginSpec

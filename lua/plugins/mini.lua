@@ -137,12 +137,23 @@ return {
       end,
     },
   },
-  -- statusline
   {
     src = url_pref .. 'mini.statusline',
     data = {
       config = function()
         require('mini.statusline').setup {}
+      end,
+    },
+  },
+  {
+    src = url_pref .. 'mini.extra',
+    data = {
+      config = function()
+        require('mini.extra').setup {}
+        vim.keymap.set('n', '<leader>o', '<cmd>Pick explorer<cr>', { desc = 'File explorer' })
+        vim.keymap.set('n', '<F4>', '<cmd>Pick git_branches<cr>', { desc = 'File explorer' })
+        vim.keymap.set('n', '<leader>fi', '<cmd>Pick oldfiles current_dir=true<cr>', { desc = 'File explorer' })
+        vim.keymap.set('n', 'z=', '<cmd>Pick spellsuggest<cr>', { desc = 'File explorer' })
       end,
     },
   },
