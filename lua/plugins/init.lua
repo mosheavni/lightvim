@@ -8,6 +8,7 @@ local plugins = {
   require 'plugins.color',
   require 'plugins.fugitive',
   require 'plugins.gitsigns',
+  require 'plugins.oil'
   -- Add more plugins here or create separate files
   -- Each file can return:
   --   - Single plugin: ---@type PluginSpec
