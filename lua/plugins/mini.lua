@@ -137,4 +137,13 @@ return {
       end,
     },
   },
+  -- statusline
+  {
+    src = url_pref .. 'mini.statusline',
+    data = {
+      config = function()
+        require('mini.statusline').setup {}
+      end,
+    },
+  },
 }

@@ -36,6 +36,10 @@
       "rev": "9fcd8856efb95a505090c3225726466494076127",
       "src": "https://github.com/nvim-mini/mini.splitjoin"
     },
+    "mini.statusline": {
+      "rev": "3e96596ebe51b899874d8174409cdc4f3c749d9a",
+      "src": "https://github.com/nvim-mini/mini.statusline"
+    },
     "mini.surround": {
       "rev": "88c52297ed3e69ecf9f8652837888ecc727a28ee",
       "src": "https://github.com/nvim-mini/mini.surround"
@@ -48,6 +52,10 @@
     "rose-pine": {
       "rev": "cf2a288696b03d0934da713d66c6d71557b5c997",
       "src": "https://github.com/rose-pine/neovim"
+    },
+    "vim-fugitive": {
+      "rev": "61b51c09b7c9ce04e821f6cf76ea4f6f903e3cf4",
+      "src": "https://github.com/tpope/vim-fugitive"
     }
   }
 }
