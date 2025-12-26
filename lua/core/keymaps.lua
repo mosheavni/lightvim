@@ -123,3 +123,5 @@ vim.api.nvim_create_user_command('DiffWithSaved', function()
 end, {})
 
 map('n', '<leader>ds', ':DiffWithSaved<cr>', { remap = false, silent = true, desc = 'Diff with saved version' })
+
+vim.cmd('source ' .. vim.fn.stdpath 'config' .. '/lua/core/search-replace.vim')
