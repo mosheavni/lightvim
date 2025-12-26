@@ -12,14 +12,25 @@ vim.o.cmdheight = 1
 vim.o.laststatus = 3
 vim.o.showcmd = true
 vim.o.showmatch = true
-vim.o.matchtime = 2      -- How long to show matching bracket
+vim.o.matchtime = 2        -- How long to show matching bracket
 vim.o.winborder = 'rounded'
-vim.o.wrap = false       -- Don't wrap lines
-vim.o.conceallevel = 0   -- Don't hide markup
-vim.o.concealcursor = '' -- Don't hide cursor line markup
+vim.o.wrap = false         -- Don't wrap lines
+vim.o.conceallevel = 0     -- Don't hide markup
+vim.o.concealcursor = ''   -- Don't hide cursor line markup
+vim.o.termguicolors = true -- Enable 24-bit RGB colors
 vim.opt.shortmess:append { c = true, l = false, q = false, S = false, C = true, I = true }
-vim.opt.pumblend = 10    -- Popup menu transparency
-vim.opt.winblend = 0     -- Floating window transparency
+vim.opt.pumblend = 10      -- Popup menu transparency
+vim.opt.winblend = 0       -- Floating window transparency
+vim.opt.fillchars = {
+  vert = '│',
+  fold = ' ',
+  foldopen = '',
+  foldclose = '',
+  foldsep = ' ',
+  foldinner = ' ',
+  diff = ' ',
+  eob = ' ',
+}
 
 -- Search
 vim.o.hlsearch = true
@@ -35,6 +46,7 @@ vim.o.sidescrolloff = 8
 -- Split Behavior
 vim.o.splitbelow = true
 vim.o.splitright = true
+vim.o.splitkeep = 'screen' -- Prevent text from shifting when opening/closing splits
 vim.o.equalalways = true
 
 -- Completion
@@ -94,10 +106,12 @@ end
 vim.o.lazyredraw = true
 vim.opt.synmaxcol = 300
 vim.o.updatetime = 300
+vim.o.timeoutlen = 400 -- Faster key sequence completion (default is 1000ms)
 
 -- Command & Wildmenu
 vim.o.wildmenu = true
 vim.opt.wildmode = { 'noselect' }
+vim.opt.wildoptions:append { 'fuzzy', 'pum' } -- Enable fuzzy matching and popup menu
 vim.opt.wildignore:append { '**/node_modules/**', '.hg', '.git', '.svn', '*.DS_Store', '*.pyc' }
 vim.o.previewheight = 15
 vim.o.history = 10000
@@ -126,6 +140,7 @@ vim.o.backspace = 'indent,eol,start' -- Better backspace behavior
 vim.o.autochdir = false              -- Don't auto change directory
 vim.opt.iskeyword:append '-'         -- Treat dash as part of word
 vim.o.selection = 'exclusive'        -- Selection behavior
+vim.o.virtualedit = 'block'          -- Allow cursor to move freely in visual block mode
 vim.o.encoding = 'UTF-8'             -- Set encoding
 
 -- Diff Options
