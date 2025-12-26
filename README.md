@@ -20,6 +20,6 @@ NVIM_APPNAME=lightvim nvim
 
 ## TODOs
 
-- [ ] Add mini pick
-- [ ] Add Treesitter
-- [ ] verify completions
+- [x] Add mini pick
+- [x] Add Treesitter
+- [x] verify completions

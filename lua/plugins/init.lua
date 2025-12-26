@@ -5,7 +5,7 @@ local plugins = {
   require 'plugins.lazydev',
   require 'plugins.mini',
   require 'plugins.treesitter',
-  require 'plugins.color'
+  require 'plugins.color',
   -- Add more plugins here or create separate files
   -- Each file can return:
   --   - Single plugin: ---@type PluginSpec

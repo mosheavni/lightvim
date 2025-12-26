@@ -25,6 +25,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
           buffer = args.buf,
           callback = function()
             vim.lsp.buf.format { bufnr = args.buf, id = client.id, timeout_ms = 1000 }
+            vim.notify('Document formatted via LSP', vim.log.levels.INFO)
           end,
         })
       end
