@@ -20,3 +20,12 @@ vim.api.nvim_create_autocmd('BufReadPost', {
   end,
   desc = 'Return to last edit pos after reopen',
 })
+
+vim.opt.wildmode = 'noselect'
+vim.api.nvim_create_autocmd('CmdlineChanged', {
+  group = group,
+  pattern = ':',
+  callback = function()
+    vim.fn.wildtrigger()
+  end,
+})

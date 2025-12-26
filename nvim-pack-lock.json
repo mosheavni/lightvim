@@ -4,14 +4,13 @@
       "rev": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d",
       "src": "https://github.com/folke/lazydev.nvim"
     },
+    "mini.indentscope": {
+      "rev": "0308f949f31769e509696af5d5f91cebb2159c69",
+      "src": "https://github.com/nvim-mini/mini.indentscope"
+    },
     "mini.surround": {
       "rev": "88c52297ed3e69ecf9f8652837888ecc727a28ee",
-      "src": "https://github.com/echasnovski/mini.surround"
-    },
-    "nvim-web-devicons": {
-      "rev": "6788013bb9cb784e606ada44206b0e755e4323d7",
-      "src": "https://github.com/nvim-tree/nvim-web-devicons"
+      "src": "https://github.com/nvim-mini/mini.surround"
     }
   }
 }
-

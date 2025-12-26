@@ -11,7 +11,7 @@ end
 
 return function(client, bufnr)
   -- If the client doesn't support completion, return.
-  if not client.supports_method 'textDocument/completion' then
+  if not client:supports_method 'textDocument/completion' then
     return
   end
 
