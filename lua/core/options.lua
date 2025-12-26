@@ -97,7 +97,7 @@ vim.o.updatetime = 300
 
 -- Command & Wildmenu
 vim.o.wildmenu = true
-vim.opt.wildmode = { 'longest:full', 'full', 'noselect' }
+vim.opt.wildmode = { 'noselect' }
 vim.opt.wildignore:append { '**/node_modules/**', '.hg', '.git', '.svn', '*.DS_Store', '*.pyc' }
 vim.o.previewheight = 15
 vim.o.history = 10000

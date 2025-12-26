@@ -1,3 +1,25 @@
+---@class PluginKeys
+---@field [1] string Mode (e.g., 'n', 'v', 'i')
+---@field [2] string Left-hand side of the mapping
+---@field [3]? string Description
+---@field desc? string Description (alternative to [3])
+---@field opts? table Additional keymap options
+
+---@class PluginData
+---@field event? string|string[] Event(s) to trigger lazy loading
+---@field ft? string|string[] Filetype(s) to trigger lazy loading
+---@field cmd? string|string[] Command(s) to trigger lazy loading
+---@field keys? PluginKeys|PluginKeys[] Keymap(s) to trigger lazy loading
+---@field pattern? string|string[] Pattern for event autocmd
+---@field config? fun(plugin: table) Configuration function
+---@field build? string|string[]|fun() Build command(s) to run after install/update
+
+---@class PluginSpec
+---@field src string Git URL of the plugin
+---@field name? string Plugin name (defaults to repo name)
+---@field version? string Git tag/branch/commit
+---@field data? PluginData Lazy loading and configuration options
+
 local group = vim.api.nvim_create_augroup('LazyPlugins', { clear = true })
 
 -- Track plugin loading state to prevent race conditions
@@ -83,8 +105,8 @@ local function load_plugin(plugin, trigger_fn)
 end
 
 ---Flatten nested plugin tables
----@param plugins table
----@return table
+---@param plugins (PluginSpec|PluginSpec[])[]
+---@return PluginSpec[]
 local function flatten_plugins(plugins)
   local result = {}
   for _, plugin in ipairs(plugins) do
@@ -102,7 +124,8 @@ local function flatten_plugins(plugins)
   return result
 end
 
----@param plugins (string|vim.pack.Spec)[]
+---Lazy load plugins with optional triggers
+---@param plugins (PluginSpec|PluginSpec[])[]
 local function lazy_load(plugins)
   plugins = flatten_plugins(plugins)
 
@@ -200,7 +223,7 @@ local function lazy_load(plugins)
 end
 
 ---Clean up plugins that are installed but not in config
----@param configured_plugins table The flattened list of configured plugins
+---@param configured_plugins PluginSpec[] The flattened list of configured plugins
 local function cleanup_orphaned_plugins(configured_plugins)
   -- Build set of configured plugin names
   local configured = {}
@@ -248,7 +271,7 @@ local M = {}
 M.lazy_load = lazy_load
 
 ---Setup cleanup command with configured plugins
----@param configured_plugins table List of configured plugins
+---@param configured_plugins (PluginSpec|PluginSpec[])[] List of configured plugins
 function M.setup_cleanup(configured_plugins)
   vim.api.nvim_create_user_command('PackClean', function()
     cleanup_orphaned_plugins(flatten_plugins(configured_plugins))
