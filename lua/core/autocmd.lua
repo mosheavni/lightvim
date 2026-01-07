@@ -48,10 +48,15 @@ vim.api.nvim_create_autocmd('FileType', {
   callback = function(args)
     -- Wait a bit for ftplugin to set formatprg
     vim.defer_fn(function()
+      -- Check if buffer is still valid
+      if not vim.api.nvim_buf_is_valid(args.buf) then
+        return
+      end
+
       if vim.bo[args.buf].formatprg ~= '' then
         vim.keymap.set('n', '<leader>lp', function()
           local view = vim.fn.winsaveview()
-          vim.cmd('silent! normal! gggqG')
+          vim.cmd 'silent! normal! gggqG'
           vim.fn.winrestview(view)
           vim.notify('Formatted via formatprg', vim.log.levels.INFO)
         end, {
