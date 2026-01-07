@@ -115,8 +115,6 @@ return {
   {
     src = url_pref .. 'mini.pick',
     data = {
-      -- keys = {
-      -- }
       config = function()
         local pick = require 'mini.pick'
         pick.setup {}

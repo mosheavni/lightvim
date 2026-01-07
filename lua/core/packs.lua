@@ -20,6 +20,54 @@
 ---@field version? string Git tag/branch/commit
 ---@field data? PluginData Lazy loading and configuration options
 
+---Extract plugin name from spec
+local function get_plugin_name(plugin)
+  return plugin.name or plugin.src:match '[^/]+$'
+end
+
+---Clean up plugins that are installed but not in config
+---@param configured_plugins PluginSpec[] The flattened list of configured plugins
+local function cleanup_orphaned_plugins(configured_plugins)
+  -- Build set of configured plugin names
+  local configured = {}
+  for _, plugin in ipairs(configured_plugins) do
+    local name = type(plugin) == 'string' and plugin or get_plugin_name(plugin)
+    configured[name] = true
+  end
+
+  -- Get all plugins managed by vim.pack
+  local all_plugins = vim.pack.get(nil, { info = false })
+  local orphaned = {}
+
+  for _, plugin in ipairs(all_plugins) do
+    local name = plugin.spec.name
+    if not configured[name] then
+      table.insert(orphaned, { name = name, path = plugin.path })
+    end
+  end
+
+  if #orphaned == 0 then
+    vim.notify('No orphaned plugins found', vim.log.levels.INFO)
+    return
+  end
+
+  -- Show orphaned plugins
+  local lines = { 'Orphaned plugins:' }
+  for i, plugin in ipairs(orphaned) do
+    table.insert(lines, string.format('%d. %s (%s)', i, plugin.name, plugin.path))
+  end
+  table.insert(lines, '\nRemove all? [y/N]: ')
+
+  local response = vim.fn.input(table.concat(lines, '\n'))
+  if response:lower() == 'y' then
+    local names = vim.tbl_map(function(p)
+      return p.name
+    end, orphaned)
+    vim.pack.del(names)
+    vim.notify('Removed ' .. #names .. ' plugin(s)', vim.log.levels.INFO)
+  end
+end
+
 local group = vim.api.nvim_create_augroup('LazyPlugins', { clear = true })
 
 -- Track plugin loading state to prevent race conditions
@@ -29,15 +77,36 @@ local loaded = {}
 -- Store build commands for plugins
 local build_commands = {}
 
+---Execute a build command (function, string, or array)
+local function execute_build(name, build)
+  if type(build) == 'function' then
+    local ok, err = pcall(build)
+    local level = ok and vim.log.levels.INFO or vim.log.levels.ERROR
+    local msg = ok and 'Build completed for ' or 'Build failed for '
+    vim.notify(msg .. name .. (err and ': ' .. err or ''), level)
+  elseif type(build) == 'string' then
+    vim.notify('Running build for ' .. name .. ': ' .. build, vim.log.levels.INFO)
+    vim.cmd(build)
+  elseif type(build) == 'table' then
+    for _, cmd in ipairs(build) do
+      if type(cmd) == 'function' then
+        cmd()
+      else
+        vim.cmd(cmd)
+      end
+    end
+    vim.notify('Build completed for ' .. name, vim.log.levels.INFO)
+  end
+end
+
 -- Set up PackChanged autocmd to run build commands
 vim.api.nvim_create_autocmd('PackChanged', {
   callback = function(ev)
     local name = ev.data.spec.name
-    local kind = ev.data.kind
     local build = build_commands[name]
 
     -- Only run build on install or update
-    if not build or (kind ~= 'install' and kind ~= 'update') then
+    if not build or (ev.data.kind ~= 'install' and ev.data.kind ~= 'update') then
       return
     end
 
@@ -46,30 +115,14 @@ vim.api.nvim_create_autocmd('PackChanged', {
       vim.cmd.packadd(name)
     end
 
-    -- Execute build command
-    if type(build) == 'function' then
-      local ok, err = pcall(build)
-      if not ok then
-        vim.notify('Build failed for ' .. name .. ': ' .. err, vim.log.levels.ERROR)
-      else
-        vim.notify('Build completed for ' .. name, vim.log.levels.INFO)
-      end
-    elseif type(build) == 'string' then
-      vim.notify('Running build for ' .. name .. ': ' .. build, vim.log.levels.INFO)
-      vim.cmd(build)
-    elseif type(build) == 'table' then
-      -- Array of commands
-      for _, cmd in ipairs(build) do
-        if type(cmd) == 'string' then
-          vim.cmd(cmd)
-        elseif type(cmd) == 'function' then
-          cmd()
-        end
-      end
-      vim.notify('Build completed for ' .. name, vim.log.levels.INFO)
-    end
+    execute_build(name, build)
   end,
 })
+
+---Convert string or table to table
+local function ensure_table(val)
+  return type(val) == 'table' and val or { val }
+end
 
 ---Load a plugin and run its config
 ---@param plugin table Plugin object from vim.pack
@@ -129,12 +182,13 @@ end
 local function lazy_load(plugins)
   plugins = flatten_plugins(plugins)
 
+  _G.vim_plugins = vim.tbl_extend('force', _G.vim_plugins or {}, plugins)
+
   -- Store build commands for PackChanged autocmd
   for _, plugin in ipairs(plugins) do
     local data = type(plugin) == 'table' and plugin.data or nil
     if data and data.build then
-      local name = plugin.name or plugin.src:match('[^/]+$')
-      build_commands[name] = data.build
+      build_commands[get_plugin_name(plugin)] = data.build
     end
   end
 
@@ -144,8 +198,7 @@ local function lazy_load(plugins)
 
       -- Event trigger
       if data.event then
-        local events = type(data.event) == 'table' and data.event or { data.event }
-        vim.api.nvim_create_autocmd(events, {
+        vim.api.nvim_create_autocmd(ensure_table(data.event), {
           group = group,
           once = true,
           pattern = data.pattern,
@@ -157,10 +210,9 @@ local function lazy_load(plugins)
 
       -- Filetype trigger
       if data.ft then
-        local fts = type(data.ft) == 'table' and data.ft or { data.ft }
         vim.api.nvim_create_autocmd('FileType', {
           group = group,
-          pattern = fts,
+          pattern = ensure_table(data.ft),
           once = true,
           callback = function()
             load_plugin(plugin)
@@ -170,8 +222,7 @@ local function lazy_load(plugins)
 
       -- Command trigger - supports single command or array of commands
       if data.cmd then
-        local cmds = type(data.cmd) == 'table' and data.cmd or { data.cmd }
-        for _, cmd in ipairs(cmds) do
+        for _, cmd in ipairs(ensure_table(data.cmd)) do
           vim.api.nvim_create_user_command(cmd, function(cmd_args)
             pcall(vim.api.nvim_del_user_command, cmd)
             load_plugin(plugin, function()
@@ -197,7 +248,8 @@ local function lazy_load(plugins)
       -- Keymap trigger - supports single keymap or array of keymaps
       -- Format: { mode, lhs, desc?, opts? } or {{ mode, lhs, desc?, opts? }, ...}
       if data.keys then
-        local keys_list = data.keys[1] and type(data.keys[1]) == 'table' and data.keys or { data.keys }
+        -- Detect if it's a single keymap (first element is mode string) or array of keymaps
+        local keys_list = type(data.keys[1]) == 'string' and { data.keys } or data.keys
         for _, key_spec in ipairs(keys_list) do
           local mode, lhs = key_spec[1], key_spec[2]
           local desc = key_spec[3] or key_spec.desc
@@ -222,60 +274,13 @@ local function lazy_load(plugins)
   })
 end
 
----Clean up plugins that are installed but not in config
----@param configured_plugins PluginSpec[] The flattened list of configured plugins
-local function cleanup_orphaned_plugins(configured_plugins)
-  -- Build set of configured plugin names
-  local configured = {}
-  for _, plugin in ipairs(configured_plugins) do
-    local name = type(plugin) == 'string' and plugin or plugin.name or plugin.src:match '[^/]+$'
-    configured[name] = true
-  end
-
-  -- Get all plugins managed by vim.pack
-  local all_plugins = vim.pack.get(nil, { info = false })
-  local orphaned = {}
-
-  for _, plugin in ipairs(all_plugins) do
-    local name = plugin.spec.name
-    if not configured[name] then
-      table.insert(orphaned, { name = name, path = plugin.path })
-    end
-  end
-
-  if #orphaned == 0 then
-    vim.notify('No orphaned plugins found', vim.log.levels.INFO)
-    return
-  end
-
-  -- Show orphaned plugins
-  local lines = { 'Orphaned plugins:' }
-  for i, plugin in ipairs(orphaned) do
-    table.insert(lines, string.format('%d. %s (%s)', i, plugin.name, plugin.path))
-  end
-  table.insert(lines, '\nRemove all? [y/N]: ')
-
-  local response = vim.fn.input(table.concat(lines, '\n'))
-  if response:lower() == 'y' then
-    local names = vim.tbl_map(function(p)
-      return p.name
-    end, orphaned)
-    vim.pack.del(names)
-    vim.notify('Removed ' .. #names .. ' plugin(s)', vim.log.levels.INFO)
-  end
-end
+vim.api.nvim_create_user_command('PackClean', function()
+  cleanup_orphaned_plugins(_G.vim_plugins)
+end, { desc = 'Clean up orphaned plugins' })
 
 -- Module exports
 local M = {}
 
 M.lazy_load = lazy_load
-
----Setup cleanup command with configured plugins
----@param configured_plugins (PluginSpec|PluginSpec[])[] List of configured plugins
-function M.setup_cleanup(configured_plugins)
-  vim.api.nvim_create_user_command('PackClean', function()
-    cleanup_orphaned_plugins(flatten_plugins(configured_plugins))
-  end, { desc = 'Clean up orphaned plugins' })
-end
 
 return M

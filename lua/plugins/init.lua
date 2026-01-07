@@ -16,4 +16,5 @@ local plugins = {
 }
 
 packs.lazy_load(plugins)
-packs.setup_cleanup(plugins)
+
+return plugins

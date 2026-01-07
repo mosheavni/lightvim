@@ -47,16 +47,6 @@ map('n', '<C-j>', '<C-w>j', { remap = true, desc = 'Go to Lower Window' })
 map('n', '<C-k>', '<C-w>k', { remap = true, desc = 'Go to Upper Window' })
 map('n', '<C-l>', '<C-w>l', { remap = true, desc = 'Go to Right Window' })
 
--- Resize Windows
-map('n', '<C-Up>', ':resize +2<CR>', { desc = 'Increase window height' })
-map('n', '<C-Down>', ':resize -2<CR>', { desc = 'Decrease window height' })
-map('n', '<C-Left>', ':vertical resize -2<CR>', { desc = 'Decrease window width' })
-map('n', '<C-Right>', ':vertical resize +2<CR>', { desc = 'Increase window width' })
-
--- Quickfix
-map('n', ']q', ':cnext<cr>zz', { remap = false, silent = true, desc = 'Next quickfix item' })
-map('n', '[q', ':cprev<cr>zz', { remap = false, silent = true, desc = 'Previous quickfix item' })
-
 -- Terminal
 map('t', '<Esc>', [[<C-\><C-n>]], { remap = false, desc = 'Exit terminal mode' })
 
