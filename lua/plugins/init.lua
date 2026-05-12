@@ -14,10 +14,12 @@ vim.api.nvim_create_autocmd('PackChanged', {
 require 'plugins.color'
 require 'plugins.mini'
 
+-- lazydev must load before LSP starts so its LspAttach handler is ready
+require 'plugins.lazydev'
+
 -- Deferred: everything else loads after first frame
 vim.schedule(function()
   require 'plugins.treesitter'
-  require 'plugins.lazydev'
   require 'plugins.fugitive'
   require 'plugins.gitsigns'
   vim.pack.add { 'https://github.com/b0o/schemastore.nvim' }
