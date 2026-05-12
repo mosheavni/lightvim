@@ -14,14 +14,14 @@ vim.api.nvim_create_autocmd('LspAttach', {
       })
     end
 
-    require 'core.completion'(client, args.buf)
+    require 'core.completion' (client, args.buf)
 
     -- Auto-format ("lint") on save.
     -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
     if client:supports_method 'textDocument/formatting' then
       if not client:supports_method 'textDocument/willSaveWaitUntil' then
         vim.api.nvim_create_autocmd('BufWritePre', {
-          group = vim.api.nvim_create_augroup('BufFmt', { clear = true }),
+          group = vim.api.nvim_create_augroup('BufFmt_' .. args.buf, { clear = true }),
           buffer = args.buf,
           callback = function()
             vim.lsp.buf.format { bufnr = args.buf, id = client.id, timeout_ms = 1000 }
@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd('LspAttach', {
       local formatprg = vim.bo[args.buf].formatprg
       if formatprg ~= '' then
         vim.api.nvim_create_autocmd('BufWritePre', {
-          group = vim.api.nvim_create_augroup('BufFmtPrg', { clear = true }),
+          group = vim.api.nvim_create_augroup('BufFmtPrg_' .. args.buf, { clear = true }),
           buffer = args.buf,
           callback = function()
             local view = vim.fn.winsaveview()
@@ -49,6 +49,12 @@ vim.api.nvim_create_autocmd('LspAttach', {
             vim.notify('Formatted via formatprg', vim.log.levels.INFO)
           end,
         })
+        vim.keymap.set('n', '<leader>lp', function()
+          local view = vim.fn.winsaveview()
+          vim.cmd 'silent! normal! gggqG'
+          vim.fn.winrestview(view)
+          vim.notify('Formatted via formatprg', vim.log.levels.INFO)
+        end, { buffer = args.buf, desc = 'Format buffer with formatprg' })
       end
     end
   end,

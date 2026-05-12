@@ -41,30 +41,3 @@ vim.api.nvim_create_autocmd('TextYankPost', { -- yank-ring
     end
   end,
 })
-
--- Auto-setup <leader>lp keymap for formatprg-based formatting
-vim.api.nvim_create_autocmd('FileType', {
-  group = group,
-  callback = function(args)
-    -- Wait a bit for ftplugin to set formatprg
-    vim.defer_fn(function()
-      -- Check if buffer is still valid
-      if not vim.api.nvim_buf_is_valid(args.buf) then
-        return
-      end
-
-      if vim.bo[args.buf].formatprg ~= '' then
-        vim.keymap.set('n', '<leader>lp', function()
-          local view = vim.fn.winsaveview()
-          vim.cmd 'silent! normal! gggqG'
-          vim.fn.winrestview(view)
-          vim.notify('Formatted via formatprg', vim.log.levels.INFO)
-        end, {
-          buffer = args.buf,
-          desc = 'Format buffer with formatprg',
-        })
-      end
-    end, 0)
-  end,
-  desc = 'Setup format keymap when formatprg is set',
-})
