@@ -5,9 +5,14 @@ return {
   root_markers = { '.git' },
   settings = {
     json = {
-      schemas = require('schemastore').json.schemas(),
       validate = { enable = true },
     },
   },
+  on_new_config = function(config)
+    local ok, schemastore = pcall(require, 'schemastore')
+    if ok then
+      config.settings.json.schemas = schemastore.json.schemas()
+    end
+  end,
   single_file_support = true,
 }
