@@ -1,158 +1,78 @@
-local url_pref = 'https://github.com/nvim-mini/'
+local url = 'https://github.com/nvim-mini/'
 
----@type PluginSpec[]
-return {
-  {
-    src = url_pref .. 'mini.indentscope',
-    data = {
-      event = 'BufReadPost',
-      config = function()
-        vim.api.nvim_create_autocmd('FileType', {
-          pattern = {
-            'dashboard',
-            'floaterm',
-            'fugitive',
-            'help',
-            'lazy',
-            'lazyterm',
-            'mason',
-            'notify',
-            'trouble',
-            'Trouble',
-            'input',
-          },
-          callback = function()
-            vim.b.miniindentscope_disable = true
-          end,
-        })
+-- Startup: notify + statusline must be ready before first frame
+vim.pack.add { url .. 'mini.notify', url .. 'mini.statusline' }
 
-        vim.api.nvim_create_autocmd('TermOpen', {
-          callback = function()
-            vim.b.miniindentscope_disable = true
-          end,
-        })
+require('mini.notify').setup { lsp_progress = { enable = false } }
+vim.keymap.set('n', '<leader>n', function()
+  require('mini.notify').show_history()
+end, { silent = true, desc = 'Show notifications history' })
+vim.keymap.set('n', '<leader>x', function()
+  require('mini.notify').clear()
+end, { silent = true, desc = 'Dismiss all notifications' })
 
-        require('mini.indentscope').setup {
-          symbol = '│',
-          options = { try_as_border = true },
-        }
-        vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#76D1A3' })
-      end,
-    },
-  },
-  {
-    src = url_pref .. 'mini.surround',
-    data = {
-      config = function()
-        require('mini.surround').setup {}
-        vim.keymap.set('n', 'saa', 'sa_', { remap = true })
-      end,
-    },
-  },
-  {
-    src = url_pref .. 'mini.notify',
-    data = {
-      config = function()
-        require('mini.notify').setup {
-          lsp_progress = { enable = false },
-        }
-        vim.keymap.set('n', '<leader>n', function()
-          require('mini.notify').show_history()
-        end, { silent = true, desc = 'Show notifications history' })
-        vim.keymap.set('n', '<leader>x', function()
-          require('mini.notify').clear()
-        end, { silent = true, desc = 'Dismiss all notifications' })
-      end,
-    },
-  },
-  {
-    src = url_pref .. 'mini.splitjoin',
-    data = {
-      keys = { 'n', 'gS' },
-      config = function()
-        require('mini.splitjoin').setup {}
-      end,
-    },
-  },
-  {
-    src = url_pref .. 'mini.ai',
-    data = {
-      event = 'BufReadPost',
-      config = function()
-        local gen_spec = require('mini.ai').gen_spec
-        require('mini.ai').setup {
-          custom_textobjects = {
-            -- Function definition (needs treesitter queries with these captures)
-            F = gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
-            c = gen_spec.treesitter { a = '@comment.outer', i = '@comment.inner' },
-          },
-        }
-      end,
-    },
-  },
-  {
-    src = url_pref .. 'mini.pairs',
-    data = {
-      event = 'InsertEnter',
-      config = function()
-        require('mini.pairs').setup {
-          mappings = {
-            ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\`].', register = { cr = false } },
-          },
-        }
-      end,
-    },
-  },
-  {
-    src = url_pref .. 'mini.operators',
-    data = {
-      event = 'BufReadPost',
-      config = function()
-        require('mini.operators').setup { exchange = { prefix = '' } }
-      end,
-    },
-  },
-  {
-    src = url_pref .. 'mini.pick',
-    data = {
-      config = function()
-        local pick = require 'mini.pick'
-        pick.setup {}
+require('mini.statusline').setup {}
 
-        vim.keymap.set('n', '<leader>ff', function()
-          pick.builtin.files()
-        end, { silent = true, desc = 'Pick from list' })
-        vim.keymap.set('n', '<leader>fb', function()
-          pick.builtin.buffers()
-        end, { silent = true, desc = 'Pick from buffers' })
-        vim.keymap.set('n', '<leader>fh', function()
-          pick.builtin.help()
-        end, { silent = true, desc = 'Pick from help tags' })
-        -- builtin grep_live
-        vim.keymap.set('n', '<leader>fg', function()
-          pick.builtin.grep_live()
-        end, { silent = true, desc = 'Pick from live grep' })
-      end,
+-- Deferred: everything else loads after first frame
+vim.schedule(function()
+  vim.pack.add {
+    url .. 'mini.pick',
+    url .. 'mini.extra',
+    url .. 'mini.surround',
+    url .. 'mini.ai',
+    url .. 'mini.pairs',
+    url .. 'mini.operators',
+    url .. 'mini.splitjoin',
+    url .. 'mini.indentscope',
+  }
+
+  local pick = require 'mini.pick'
+  pick.setup {}
+  vim.keymap.set('n', '<leader>ff', pick.builtin.files, { silent = true, desc = 'Pick from list' })
+  vim.keymap.set('n', '<leader>fb', pick.builtin.buffers, { silent = true, desc = 'Pick from buffers' })
+  vim.keymap.set('n', '<leader>fh', pick.builtin.help, { silent = true, desc = 'Pick from help tags' })
+  vim.keymap.set('n', '<leader>fg', pick.builtin.grep_live, { silent = true, desc = 'Pick from live grep' })
+
+  require('mini.extra').setup {}
+  vim.keymap.set('n', '<leader>o', '<cmd>Pick explorer<cr>', { desc = 'File explorer' })
+  vim.keymap.set('n', '<F4>', '<cmd>Pick git_branches<cr>', { desc = 'Git branches' })
+  vim.keymap.set('n', '<leader>fi', '<cmd>Pick oldfiles current_dir=true<cr>', { desc = 'Recent files' })
+  vim.keymap.set('n', 'z=', '<cmd>Pick spellsuggest<cr>', { desc = 'Spell suggest' })
+
+  require('mini.surround').setup {}
+  vim.keymap.set('n', 'saa', 'sa_', { remap = true })
+
+  local gen_spec = require('mini.ai').gen_spec
+  require('mini.ai').setup {
+    custom_textobjects = {
+      F = gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
+      c = gen_spec.treesitter { a = '@comment.outer', i = '@comment.inner' },
     },
-  },
-  {
-    src = url_pref .. 'mini.statusline',
-    data = {
-      config = function()
-        require('mini.statusline').setup {}
-      end,
+  }
+
+  require('mini.pairs').setup {
+    mappings = {
+      ['`'] = { action = 'closeopen', pair = '``', neigh_pattern = '[^\\`].', register = { cr = false } },
     },
-  },
-  {
-    src = url_pref .. 'mini.extra',
-    data = {
-      config = function()
-        require('mini.extra').setup {}
-        vim.keymap.set('n', '<leader>o', '<cmd>Pick explorer<cr>', { desc = 'File explorer' })
-        vim.keymap.set('n', '<F4>', '<cmd>Pick git_branches<cr>', { desc = 'File explorer' })
-        vim.keymap.set('n', '<leader>fi', '<cmd>Pick oldfiles current_dir=true<cr>', { desc = 'File explorer' })
-        vim.keymap.set('n', 'z=', '<cmd>Pick spellsuggest<cr>', { desc = 'File explorer' })
-      end,
-    },
-  },
-}
+  }
+
+  require('mini.operators').setup { exchange = { prefix = '' } }
+  require('mini.splitjoin').setup {}
+
+  require('mini.indentscope').setup {
+    symbol = '│',
+    options = { try_as_border = true },
+  }
+  vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#76D1A3' })
+  vim.api.nvim_create_autocmd('FileType', {
+    pattern = { 'dashboard', 'floaterm', 'fugitive', 'help', 'lazy', 'lazyterm', 'mason', 'notify', 'trouble', 'Trouble', 'input' },
+    callback = function()
+      vim.b.miniindentscope_disable = true
+    end,
+  })
+  vim.api.nvim_create_autocmd('TermOpen', {
+    callback = function()
+      vim.b.miniindentscope_disable = true
+    end,
+  })
+end)
