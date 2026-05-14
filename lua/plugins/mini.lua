@@ -24,7 +24,10 @@ vim.schedule(function()
     url .. 'mini.operators',
     url .. 'mini.splitjoin',
     url .. 'mini.indentscope',
+    url .. 'mini.icons'
   }
+
+  require('mini.icons').setup()
 
   local pick = require 'mini.pick'
   pick.setup {}
