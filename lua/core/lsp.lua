@@ -4,8 +4,6 @@
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true }),
   callback = function(args)
-    vim.lsp.log.set_level 'trace'
-    require('vim.lsp.log').set_format_func(vim.inspect)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
     if client:supports_method 'textDocument/implementation' then
       vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {
