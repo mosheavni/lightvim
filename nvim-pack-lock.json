@@ -1,8 +1,17 @@
 {
   "plugins": {
+    "blink.download": {
+      "rev": "f29d8bac6549bc1e7d699c83f680823d7def98bd",
+      "src": "https://github.com/saghen/blink.download"
+    },
     "gitsigns.nvim": {
       "rev": "e895b811bc63d8e9b9c93216f1fe99c51280c769",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
+    },
+    "kubectl.nvim": {
+      "rev": "c440c60ca340abae660820c39a2565be374ba1b6",
+      "src": "https://github.com/ramilito/kubectl.nvim",
+      "version": "2.0.0 - 3.0.0"
     },
     "lazydev.nvim": {
       "rev": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d",
