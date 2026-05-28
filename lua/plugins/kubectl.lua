@@ -11,5 +11,5 @@ vim.keymap.set(
   "n",
   "<leader>k",
   '<cmd>lua require("kubectl").toggle({ tab = true })<cr>',
-  { noremap = true, silent = true }
+  { noremap = true, silent = true, desc = "Open Kubectl.nvim" }
 )

@@ -4,10 +4,10 @@ local url = 'https://github.com/nvim-mini/'
 vim.pack.add { url .. 'mini.notify', url .. 'mini.statusline' }
 
 require('mini.notify').setup { lsp_progress = { enable = false } }
-vim.keymap.set('n', '<leader>n', function()
+vim.keymap.set('n', '<leader>nh', function()
   require('mini.notify').show_history()
 end, { silent = true, desc = 'Show notifications history' })
-vim.keymap.set('n', '<leader>x', function()
+vim.keymap.set('n', '<leader>nx', function()
   require('mini.notify').clear()
 end, { silent = true, desc = 'Dismiss all notifications' })
 
@@ -33,10 +33,10 @@ vim.schedule(function()
 
   local pick = require 'mini.pick'
   pick.setup {}
-  vim.keymap.set('n', '<leader>ff', pick.builtin.files, { silent = true, desc = 'Pick from list' })
-  vim.keymap.set('n', '<leader>fb', pick.builtin.buffers, { silent = true, desc = 'Pick from buffers' })
-  vim.keymap.set('n', '<leader>fh', pick.builtin.help, { silent = true, desc = 'Pick from help tags' })
-  vim.keymap.set('n', '<leader>fg', pick.builtin.grep_live, { silent = true, desc = 'Pick from live grep' })
+  vim.keymap.set('n', '<leader>ff', pick.builtin.files, { silent = true, desc = 'Find files' })
+  vim.keymap.set('n', '<leader>fb', pick.builtin.buffers, { silent = true, desc = 'Find open buffers' })
+  vim.keymap.set('n', '<leader>fh', pick.builtin.help, { silent = true, desc = 'Find help tags' })
+  vim.keymap.set('n', '<leader>fg', pick.builtin.grep_live, { silent = true, desc = 'Live grep' })
 
   require('mini.extra').setup {}
   vim.keymap.set('n', '<leader>o', '<cmd>Pick explorer<cr>', { desc = 'File explorer' })
@@ -103,6 +103,15 @@ vim.schedule(function()
       clue.gen_clues.registers(),
       clue.gen_clues.windows(),
       clue.gen_clues.z(),
+      { mode = 'n', keys = '<Leader>f',  desc = '+Picker' },
+      { mode = 'n', keys = '<Leader>g',  desc = '+Git' },
+      { mode = 'n', keys = '<Leader>c',  desc = '+Copy' },
+      { mode = 'n', keys = '<Leader>cf', desc = '+Copy file' },
+      { mode = 'n', keys = '<Leader>l',  desc = '+LSP' },
+      { mode = 'n', keys = '<Leader>h',  desc = '+Hunks' },
+      { mode = 'n', keys = '<Leader>d',  desc = '+Diff' },
+      { mode = 'n', keys = '<Leader>n',  desc = '+Notifications' },
+      { mode = 'n', keys = '<Leader>q',  desc = '+Quit' },
     },
   }
 end)

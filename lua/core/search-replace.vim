@@ -33,8 +33,6 @@ function! SarPopulateSearchline(mode) abort
   return cmd
 endfunction
 
-nnoremap <leader>r :<C-\>eSarPopulateSearchline('n')<CR>
-vnoremap <leader>r :<C-\>eSarPopulateSearchline('v')<CR>
 
 function! SarToggleChar(char) abort
   let cmd = getcmdline()

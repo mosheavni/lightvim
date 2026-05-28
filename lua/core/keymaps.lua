@@ -71,14 +71,11 @@ map('n', '<leader>cfn', function()
   vim.fn.setreg('+', file_name)
   print('Copied file name ' .. file_name)
 end, { remap = false, silent = true, desc = 'Copy file name' })
+map('n', '<leader>cb', '"+yal', { desc = 'Copy buffer to clipboard' })
 
 -- Change working directory based on open file
-map(
-  'n',
-  '<leader>cd',
-  ':cd %:p:h<CR>:pwd<CR>',
-  { remap = false, silent = true, desc = 'Change directory to current file' }
-)
+map('n', '<leader>.', ':cd %:p:h<CR>:pwd<CR>',
+  { remap = false, silent = true, desc = 'Change directory to current file' })
 
 -- Copy and Paste
 -- Copy and paste to/from system clipboard
@@ -87,8 +84,13 @@ map('n', 'cP', '"+yy', { desc = 'Copy line to system clipboard' })
 map('n', 'cp', '"+y', { desc = 'Copy to system clipboard' })
 map('n', 'cv', '"+p', { desc = 'Paste from system clipboard' })
 map('n', '<C-c>', 'ciw', { desc = 'Change inner word' })
--- Copy entire file to clipboard
-map('n', 'Y', ':%y+<cr>', { remap = false, silent = true, desc = 'Copy buffer content to clipboard' })
+
+-- diff
+map('n', '<leader>dt', '<cmd>diffthis<cr>', { desc = 'Diff this file' })
+map('n', '<leader>df', '<cmd>diffoff<cr>', { desc = 'Diff off' })
+map('n', '<leader>dg', '<cmd>diffget<cr>', { desc = 'Get changes from the other file' })
+map('n', '<leader>dp', '<cmd>diffput<cr>', { desc = 'Push changes to the other file' })
+
 
 -- Application
 map('n', '<leader>qq', ':qall<cr>', { remap = false, silent = true, desc = 'Quit all' })
@@ -116,3 +118,5 @@ end, {})
 map('n', '<leader>ds', ':DiffWithSaved<cr>', { remap = false, silent = true, desc = 'Diff with saved version' })
 
 vim.cmd('source ' .. vim.fn.stdpath 'config' .. '/lua/core/search-replace.vim')
+map('n', '<leader>r', ":<C-\\>eSarPopulateSearchline('n')<CR>", { desc = 'Search and replace word under cursor' })
+map('v', '<leader>r', ":<C-\\>eSarPopulateSearchline('v')<CR>", { desc = 'Search and replace selection' })
