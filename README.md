@@ -36,13 +36,14 @@ Only install what's relevant to you.
 > [!NOTE]
 > (used as `formatprg` fallback when LSP has no formatter)
 
-| CLI          | Language                    |
-| -----        | ----------                  |
-| `prettierd`  | JS / TS / HTML / CSS / JSON |
-| `black`      | Python                      |
-| `shfmt`      | Shell                       |
-| `terraform`  | Terraform                   |
-| `terragrunt` | HCL                         |
+| CLI          | Language                                                                         |
+| -----        | ----------                                                                       |
+| `prettierd`  | JS / TS / HTML / CSS / JSON / YAML / GraphQL / Vue / Svelte / Astro / Handlebars |
+| `ruff`       | Python                                                                           |
+| `shfmt`      | Shell / Zsh                                                                      |
+| `terraform`  | Terraform                                                                        |
+| `terragrunt` | HCL                                                                              |
+| `tombi`      | TOML                                                                             |
 
 ## How to use
 

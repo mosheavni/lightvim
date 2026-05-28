@@ -1,1 +1,1 @@
-vim.bo.formatprg = 'black --quiet -'
+vim.bo.formatprg = 'ruff format --stdin-filename ' .. vim.fn.expand('%:p') .. ' -'
