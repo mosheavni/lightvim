@@ -58,7 +58,8 @@ vim.o.pumheight = 10                                             -- max height o
 -- Folding
 vim.o.foldenable = true     -- enable fold
 vim.o.foldlevel = 99        -- start editing with all folds opened
-vim.o.foldmethod = 'manual' -- use tree-sitter for folding method
+vim.o.foldmethod = 'expr'
+vim.o.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
 
 -- Indentation
 vim.o.breakindent = true
@@ -103,7 +104,6 @@ if vim.fn.isdirectory(undodir) == 0 then
 end
 
 -- Performance
-vim.o.lazyredraw = true
 vim.opt.synmaxcol = 300
 vim.o.updatetime = 300
 vim.o.timeoutlen = 400 -- Faster key sequence completion (default is 1000ms)
