@@ -24,7 +24,9 @@ vim.schedule(function()
     url .. 'mini.operators',
     url .. 'mini.splitjoin',
     url .. 'mini.indentscope',
-    url .. 'mini.icons'
+    url .. 'mini.icons',
+    url .. 'mini.clue',
+    url .. 'mini.cursorword',
   }
 
   require('mini.icons').setup()
@@ -78,4 +80,29 @@ vim.schedule(function()
       vim.b.miniindentscope_disable = true
     end,
   })
+
+  require('mini.cursorword').setup {}
+
+  local clue = require 'mini.clue'
+  clue.setup {
+    triggers = {
+      { mode = 'n', keys = '<Leader>' },
+      { mode = 'x', keys = '<Leader>' },
+      { mode = 'n', keys = 'g' },
+      { mode = 'x', keys = 'g' },
+      { mode = 'n', keys = "'" },
+      { mode = 'n', keys = '`' },
+      { mode = 'n', keys = '"' },
+      { mode = 'n', keys = '<C-w>' },
+      { mode = 'n', keys = 'z' },
+      { mode = 'x', keys = 'z' },
+    },
+    clues = {
+      clue.gen_clues.g(),
+      clue.gen_clues.marks(),
+      clue.gen_clues.registers(),
+      clue.gen_clues.windows(),
+      clue.gen_clues.z(),
+    },
+  }
 end)
