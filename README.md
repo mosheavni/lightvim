@@ -7,9 +7,42 @@
 
 LightVim is a Neovim config.
 
-## Requirement
+## Requirements
 
 - Neovim **v0.12+** (minimum — uses `vim.pack` for plugin management)
+
+### External CLIs
+
+Only install what's relevant to you.
+
+#### LSP servers
+
+| CLI                           | Language                |
+| -----                         | ----------              |
+| `typescript-language-server`  | TypeScript / JavaScript |
+| `pyright-langserver`          | Python                  |
+| `bash-language-server`        | Bash / Shell            |
+| `vscode-html-language-server` | HTML                    |
+| `vscode-css-language-server`  | CSS / SCSS / Less       |
+| `terraform-ls`                | Terraform               |
+| `docker-langserver`           | Dockerfile              |
+| `vscode-json-languageserver`  | JSON                    |
+| `yaml-language-server`        | YAML                    |
+| `lua-language-server`         | Lua                     |
+| `marksman`                    | Markdown                |
+
+#### Formatters
+>
+> [!NOTE]
+> (used as `formatprg` fallback when LSP has no formatter)
+
+| CLI          | Language                    |
+| -----        | ----------                  |
+| `prettierd`  | JS / TS / HTML / CSS / JSON |
+| `black`      | Python                      |
+| `shfmt`      | Shell                       |
+| `terraform`  | Terraform                   |
+| `terragrunt` | HCL                         |
 
 ## How to use
 

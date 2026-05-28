@@ -67,10 +67,18 @@ vim.api.nvim_create_autocmd('LspAttach', {
 
 -- enable configured language servers
 -- you can find server configurations from lsp/*.lua files
+-- servers without a local lsp/*.lua rely on nvim-lspconfig defaults
 vim.lsp.enable 'jsonls'
 vim.lsp.enable 'lua_ls'
 vim.lsp.enable 'marksman'
 vim.lsp.enable 'yaml_ls'
+vim.lsp.enable 'ts_ls'
+vim.lsp.enable 'pyright'
+vim.lsp.enable 'bashls'
+vim.lsp.enable 'html'
+vim.lsp.enable 'cssls'
+vim.lsp.enable 'terraformls'
+vim.lsp.enable 'dockerls'
 
 vim.api.nvim_create_user_command('LspInfo', function()
   local clients = vim.lsp.get_clients { bufnr = 0 }
