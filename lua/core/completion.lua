@@ -1,7 +1,7 @@
 ---For replacing certain <C-x>... keymaps.
 ---@param keys string
 local function feedkeys(keys)
-  vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(keys, true, false, true), 'n', true)
+  vim.api.nvim_feedkeys(vim.keycode(keys), 'n', true)
 end
 
 ---Is the completion menu open?
