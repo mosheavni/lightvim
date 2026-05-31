@@ -10,7 +10,7 @@
     },
     "kubectl.nvim": {
       "rev": "c440c60ca340abae660820c39a2565be374ba1b6",
-      "src": "https://github.com/ramilito/kubectl.nvim",
+      "src": "https://github.com/Ramilito/kubectl.nvim",
       "version": "2.0.0 - 3.0.0"
     },
     "lazydev.nvim": {

@@ -1,5 +1,18 @@
 -- :h lsp-config
 
+vim.diagnostic.config {
+  update_in_insert = false,
+  severity_sort = true,
+  float = { border = 'rounded', source = 'if_many' },
+  underline = { severity = { min = vim.diagnostic.severity.WARN } },
+  virtual_lines = { current_line = true },
+  jump = {
+    on_jump = function(_, bufnr)
+      vim.diagnostic.open_float { bufnr = bufnr, scope = 'cursor', focus = false }
+    end,
+  },
+}
+
 -- enable lsp completion
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true }),
@@ -23,7 +36,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
           buffer = args.buf,
           callback = function()
             vim.lsp.buf.format { bufnr = args.buf, id = client.id, timeout_ms = 1000 }
-            vim.notify('Document formatted via LSP', vim.log.levels.INFO)
           end,
         })
       end
@@ -44,25 +56,38 @@ vim.api.nvim_create_autocmd('LspAttach', {
             local view = vim.fn.winsaveview()
             vim.cmd 'silent! normal! gggqG'
             vim.fn.winrestview(view)
-            vim.notify('Formatted via formatprg', vim.log.levels.INFO)
           end,
         })
         vim.keymap.set('n', '<leader>lp', function()
           local view = vim.fn.winsaveview()
           vim.cmd 'silent! normal! gggqG'
           vim.fn.winrestview(view)
-          vim.notify('Formatted via formatprg', vim.log.levels.INFO)
         end, { buffer = args.buf, desc = 'Format buffer with formatprg' })
       end
     end
-  end,
 
-  -- diagnostic
-  vim.diagnostic.config {
-    virtual_lines = {
-      current_line = true,
-    },
-  },
+    -- LSP document highlight: semantically highlight all references under cursor
+    if client:supports_method('textDocument/documentHighlight', args.buf) then
+      local hl_group = vim.api.nvim_create_augroup('lsp-highlight', { clear = false })
+      vim.api.nvim_create_autocmd({ 'CursorHold', 'CursorHoldI' }, {
+        buffer = args.buf,
+        group = hl_group,
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd({ 'CursorMoved', 'CursorMovedI' }, {
+        buffer = args.buf,
+        group = hl_group,
+        callback = vim.lsp.buf.clear_references,
+      })
+      vim.api.nvim_create_autocmd('LspDetach', {
+        group = vim.api.nvim_create_augroup('lsp-detach', { clear = true }),
+        callback = function(e)
+          vim.lsp.buf.clear_references()
+          vim.api.nvim_clear_autocmds { group = 'lsp-highlight', buffer = e.buf }
+        end,
+      })
+    end
+  end,
 })
 
 -- enable configured language servers

@@ -3,7 +3,7 @@ local url = 'https://github.com/nvim-mini/'
 -- Startup: notify + statusline must be ready before first frame
 vim.pack.add { url .. 'mini.notify', url .. 'mini.statusline' }
 
-require('mini.notify').setup { lsp_progress = { enable = false } }
+require('mini.notify').setup { lsp_progress = { enable = true } }
 vim.keymap.set('n', '<leader>nh', function()
   require('mini.notify').show_history()
 end, { silent = true, desc = 'Show notifications history' })
@@ -49,6 +49,7 @@ vim.schedule(function()
 
   local gen_spec = require('mini.ai').gen_spec
   require('mini.ai').setup {
+    mappings = { around_next = 'aa', inside_next = 'ii' },
     custom_textobjects = {
       F = gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
       c = gen_spec.treesitter { a = '@comment.outer', i = '@comment.inner' },
