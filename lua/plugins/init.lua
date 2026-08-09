@@ -13,7 +13,6 @@ vim.api.nvim_create_autocmd('PackChanged', {
 })
 
 require 'plugins.mini'
-require 'plugins.lazydev'
 
 vim.schedule(function()
   require 'plugins.treesitter'
