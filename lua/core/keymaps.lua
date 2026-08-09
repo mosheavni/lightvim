@@ -21,6 +21,16 @@ map('n', 'N', 'Nzzzv', { desc = 'Previous search result (centered)' })
 map('n', '<C-d>', '<C-d>zz', { desc = 'Half page down (centered)' })
 map('n', '<C-u>', '<C-u>zz', { desc = 'Half page up (centered)' })
 
+-- Grep
+map("n", "<leader>/", function()
+  vim.ui.input({ prompt = "Grep: " }, function(pattern)
+    if pattern then
+      vim.cmd("silent grep! " .. vim.fn.fnameescape(pattern))
+      vim.cmd("copen")
+    end
+  end)
+end, { silent = true, desc = "Native Grep" })
+
 -- EasyMotion
 map({ 'n', 'x' }, 's', function()
   require('core.easymotion').easy_motion()
@@ -31,18 +41,8 @@ end, { desc = 'Jump to 2 characters' })
 map('v', '<tab>', '>gv', { desc = 'Indent selected text' })
 map('v', '<s-tab>', '<gv', { desc = 'Unindent selected text' })
 
--- Indent block
-vim.cmd [[
-function! g:__align_based_on_indent(_)
-  normal! v%koj$>
-endfunction
-]]
-map('n', '<leader>gt', function()
-  vim.go.operatorfunc = '__align_based_on_indent'
-  return 'g@l'
-end, { expr = true })
-
 -- Windows
+map('n', '<Leader><Leader>', '<C-^>', { remap = false, silent = true, desc = 'Switch to alternate file' })
 map('n', '<c-w>v', ':vnew<cr>', { remap = false, silent = true, desc = 'New buffer vertically split' })
 map('n', '<c-w>s', ':new<cr>', { remap = false, silent = true, desc = 'New buffer horizontally split' })
 map('n', '<c-w>e', ':enew<cr>', { remap = false, silent = true, desc = 'New empty buffer' })
