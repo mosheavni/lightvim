@@ -1,6 +1,3 @@
--- Colorscheme
-vim.cmd [[colorscheme default]]
-
 -- Display & UI
 vim.o.title = true
 vim.o.cursorcolumn = true
@@ -165,8 +162,6 @@ vim.opt.diffopt = {
   'context:6',
   'iwhite',
 }
-
-vim.api.nvim_set_hl(0, "Normal", { bg = "none" })
 
 -- Filetype Detection
 local kube_config_pattern = [[.*\.kube/config]]

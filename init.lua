@@ -1,4 +1,5 @@
 require 'core.globals'
+require 'core.colorscheme'
 require 'core.options'
 require 'core.statusline'
 require 'core.find'
