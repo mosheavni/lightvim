@@ -3,6 +3,10 @@ local map = vim.keymap.set
 -- Search
 map('n', '<CR>', '<Esc>:nohlsearch<CR><CR>', { remap = false, silent = true, desc = 'Clear search highlighting' })
 
+-- Command-line completion (wildmenu popup)
+map('c', '<Tab>', '<C-n>', { remap = false, desc = 'Select next completion match' })
+map('c', '<S-Tab>', '<C-p>', { remap = false, desc = 'Select previous completion match' })
+
 -- Navigation
 map({ 'n', 'v' }, '0', '^', { remap = false, desc = 'Go to the first non-blank character' })
 -- Move view left or right
