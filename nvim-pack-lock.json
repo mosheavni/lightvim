@@ -13,10 +13,6 @@
       "src": "https://github.com/Ramilito/kubectl.nvim",
       "version": "2.0.0 - 3.0.0"
     },
-    "lazydev.nvim": {
-      "rev": "5231c62aa83c2f8dc8e7ba957aa77098cda1257d",
-      "src": "https://github.com/folke/lazydev.nvim"
-    },
     "mini.ai": {
       "rev": "bfb26d9072670c3aaefab0f53024b2f3729c8083",
       "src": "https://github.com/nvim-mini/mini.ai"
