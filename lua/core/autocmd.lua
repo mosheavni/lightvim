@@ -1,12 +1,12 @@
 local group = vim.api.nvim_create_augroup('UserAutocmds', { clear = true })
 
--- UI/UX: Highlight on yank
-vim.api.nvim_create_autocmd('TextYankPost', {
+-- UI/UX: Highlight on yank and paste
+vim.api.nvim_create_autocmd({ 'TextYankPost', 'TextPutPost' }, {
   group = group,
   callback = function()
     vim.hl.hl_op { timeout = 200 }
   end,
-  desc = 'Highlight selection on yank',
+  desc = 'Highlight selection on yank/paste',
 })
 
 -- Jump to last edit position when reopening file

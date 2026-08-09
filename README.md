@@ -18,7 +18,7 @@ Only install what's relevant to you.
 #### LSP servers
 
 | CLI                           | Language                |
-| -----                         | ----------              |
+| ----------------------------- | ----------------------- |
 | `typescript-language-server`  | TypeScript / JavaScript |
 | `pyright-langserver`          | Python                  |
 | `bash-language-server`        | Bash / Shell            |
@@ -32,12 +32,12 @@ Only install what's relevant to you.
 | `marksman`                    | Markdown                |
 
 #### Formatters
->
+
 > [!NOTE]
 > (used as `formatprg` fallback when LSP has no formatter)
 
 | CLI          | Language                                                                         |
-| -----        | ----------                                                                       |
+| ------------ | -------------------------------------------------------------------------------- |
 | `prettierd`  | JS / TS / HTML / CSS / JSON / YAML / GraphQL / Vue / Svelte / Astro / Handlebars |
 | `ruff`       | Python                                                                           |
 | `shfmt`      | Shell / Zsh                                                                      |
@@ -56,6 +56,8 @@ git clone https://github.com/mosheavni/lightvim.git ~/.config/lightvim
 # 2. use it with NVIM_APPNAME
 NVIM_APPNAME=lightvim nvim
 ```
+
+Plugins are managed with the builtin `vim.pack`. Run `:packupdate` to update all plugins and `:packdel` to remove ones no longer declared in the config.
 
 ## TODOs
 
