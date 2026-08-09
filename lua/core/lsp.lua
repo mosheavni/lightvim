@@ -18,6 +18,13 @@ vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspAttach', { clear = true }),
   callback = function(args)
     local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
+
+    -- LSP keymaps (<leader>l...)
+    vim.keymap.set('n', '<leader>lq', function()
+      vim.diagnostic.setqflist()
+      vim.cmd 'copen'
+    end, { buffer = args.buf, desc = 'Diagnostics to quickfix' })
+
     if client:supports_method 'textDocument/implementation' then
       vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {
         buffer = args.buf,
