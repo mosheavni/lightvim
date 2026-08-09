@@ -1,5 +1,7 @@
 require 'core.globals'
 require 'core.options'
+require 'core.statusline'
+require 'core.find'
 require 'core.terminal'
 require 'core.keymaps'
 require 'core.winresizer'

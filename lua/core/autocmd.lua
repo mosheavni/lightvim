@@ -118,3 +118,30 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = event.buf, silent = true })
   end,
 })
+
+-- Warn about installed vim.pack plugins that no longer get loaded
+vim.api.nvim_create_autocmd('VimEnter', {
+  group = group,
+  desc = 'Suggest :packdel for installed but unused plugins',
+  callback = function()
+    vim.schedule(function()
+      local unused = {}
+      for _, plug in ipairs(vim.pack.get(nil, { info = false })) do
+        if not plug.active then
+          unused[#unused + 1] = plug.spec.name
+        end
+      end
+      if #unused == 0 then
+        return
+      end
+      vim.notify(
+        'Unused plugins installed: '
+          .. table.concat(unused, ', ')
+          .. '\nRun :packdel '
+          .. table.concat(unused, ' ')
+          .. ' (or :packdel ++all) to remove them.',
+        vim.log.levels.WARN
+      )
+    end)
+  end,
+})

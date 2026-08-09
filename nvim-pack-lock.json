@@ -42,7 +42,7 @@
       "src": "https://github.com/nvim-mini/mini.indentscope"
     },
     "mini.notify": {
-      "rev": "29ec27f60bf4b63e447c851d9061c434d80795a6",
+      "rev": "13df5edffc3e27937b166a0f25a8329b46e15a4e",
       "src": "https://github.com/nvim-mini/mini.notify"
     },
     "mini.operators": {
@@ -60,10 +60,6 @@
     "mini.splitjoin": {
       "rev": "9fcd8856efb95a505090c3225726466494076127",
       "src": "https://github.com/nvim-mini/mini.splitjoin"
-    },
-    "mini.statusline": {
-      "rev": "3e96596ebe51b899874d8174409cdc4f3c749d9a",
-      "src": "https://github.com/nvim-mini/mini.statusline"
     },
     "mini.surround": {
       "rev": "88c52297ed3e69ecf9f8652837888ecc727a28ee",

@@ -11,8 +11,11 @@ vim.api.nvim_create_autocmd('FileType', {
       if not vim.treesitter.query.get(lang, 'highlights') then return end
       if not pcall(vim.treesitter.start, ev.buf) then return end
       vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-      vim.wo[0][0].foldmethod = 'expr'
-      vim.wo[0][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      local win = vim.api.nvim_get_current_win()
+      if not vim.wo[win].diff then
+        vim.wo[win][0].foldmethod = 'expr'
+        vim.wo[win][0].foldexpr = 'v:lua.vim.treesitter.foldexpr()'
+      end
     end
 
     if vim.treesitter.language.add(lang) then

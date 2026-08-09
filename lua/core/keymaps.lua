@@ -108,13 +108,12 @@ vim.api.nvim_create_user_command('DiffWithSaved', function()
   -- Map `q` for both buffers to exit diff view and delete scratch buffer
   for _, buf in ipairs { scratch, start } do
     map('n', 'q', function()
-      vim.cmd 'windo diffoff'
+      vim.cmd 'diffoff!'
       vim.api.nvim_buf_delete(scratch, { force = true })
       vim.keymap.del('n', 'q', { buffer = start })
     end, { buffer = buf })
   end
 end, {})
-
 map('n', '<leader>ds', ':DiffWithSaved<cr>', { remap = false, silent = true, desc = 'Diff with saved version' })
 
 vim.cmd('source ' .. vim.fn.stdpath 'config' .. '/lua/core/search-replace.vim')

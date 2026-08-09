@@ -9,7 +9,7 @@ vim.o.number = true
 vim.o.relativenumber = true
 vim.o.numberwidth = 2 -- Narrow number column
 vim.o.signcolumn = 'yes'
-vim.o.showmode = false -- Redundant, mini.statusline shows the mode
+vim.o.showmode = false -- Redundant, the statusline shows the mode
 vim.o.cmdheight = 1
 vim.o.laststatus = 3
 vim.o.showcmd = true
@@ -40,6 +40,8 @@ vim.o.incsearch = true
 vim.o.inccommand = 'split'
 vim.o.ignorecase = true
 vim.o.smartcase = true
+vim.opt.grepprg = 'rg --vimgrep --smart-case --hidden'
+vim.opt.grepformat = '%f:%l:%c:%m'
 
 -- Scrolling
 vim.o.scrolloff = 4

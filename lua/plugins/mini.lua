@@ -1,7 +1,7 @@
 local url = 'https://github.com/nvim-mini/'
 
--- Startup: notify + statusline must be ready before first frame
-vim.pack.add { url .. 'mini.notify', url .. 'mini.statusline' }
+-- Startup: notify must be ready before first frame (statusline is native, see core/statusline.lua)
+vim.pack.add { url .. 'mini.notify' }
 
 require('mini.notify').setup { lsp_progress = { enable = true } }
 vim.keymap.set('n', '<leader>nh', function()
@@ -10,8 +10,6 @@ end, { silent = true, desc = 'Show notifications history' })
 vim.keymap.set('n', '<leader>nx', function()
   require('mini.notify').clear()
 end, { silent = true, desc = 'Dismiss all notifications' })
-
-require('mini.statusline').setup {}
 
 -- Deferred: everything else loads after first frame
 vim.schedule(function()
