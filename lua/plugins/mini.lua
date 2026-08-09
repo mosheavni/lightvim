@@ -47,7 +47,7 @@ vim.schedule(function()
 
   local gen_spec = require('mini.ai').gen_spec
   require('mini.ai').setup {
-    mappings = { around_next = 'aa', inside_next = 'ii' },
+    mappings = { around_next = '', inside_next = '', around_last = '', inside_last = '' },
     custom_textobjects = {
       F = gen_spec.treesitter { a = '@function.outer', i = '@function.inner' },
       c = gen_spec.treesitter { a = '@comment.outer', i = '@comment.inner' },
