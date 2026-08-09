@@ -51,6 +51,47 @@ map('n', '<C-j>', '<C-w>j', { remap = true, desc = 'Go to Lower Window' })
 map('n', '<C-k>', '<C-w>k', { remap = true, desc = 'Go to Upper Window' })
 map('n', '<C-l>', '<C-w>l', { remap = true, desc = 'Go to Right Window' })
 
+-- Dir
+map('n', '<leader>v', function()
+  require('nvim.dir')._open_parent()
+end, { desc = "Open dir of the current file" })
+
+-- Dir listing file operations
+local function dir_entry_path()
+  local line = vim.api.nvim_get_current_line():gsub('%z', '\n'):gsub('/$', '')
+  if line == '' then
+    return nil
+  end
+  return vim.fs.joinpath(vim.api.nvim_buf_get_name(0), line)
+end
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = 'directory',
+  desc = 'Keymaps for the dir listing',
+  callback = function(args)
+    local buf = args.buf
+    map('n', 'q', '<C-^>', { buffer = buf, remap = false, silent = true, desc = 'Close directory listing' })
+    map('n', 'd', function()
+      local path = dir_entry_path()
+      if not path then
+        return
+      end
+      vim.api.nvim_feedkeys(':!rm ' .. vim.fn.fnameescape(path), 'n', true)
+    end, { buffer = buf, desc = 'Populate :!rm for entry under cursor' })
+    map('n', 'a', function()
+      vim.api.nvim_feedkeys(':edit %/', 'n', true)
+    end, { buffer = buf, desc = 'Populate :edit %/ to add a new file' })
+    map('n', 'r', function()
+      local path = dir_entry_path()
+      if not path then
+        return
+      end
+      local escaped = vim.fn.fnameescape(path)
+      vim.api.nvim_feedkeys(':!mv ' .. escaped .. ' ' .. escaped, 'n', true)
+    end, { buffer = buf, desc = 'Populate :!mv to rename entry under cursor' })
+  end,
+})
+
 -- Terminal
 map('t', '<Esc>', [[<C-\><C-n>]], { remap = false, desc = 'Exit terminal mode' })
 
