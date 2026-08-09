@@ -6,15 +6,15 @@ local open_quickfix = function(new_split_cmd)
 end
 vim.keymap.set('n', '<c-v>', function()
   open_quickfix 'vnew'
-end, { buffer = true })
+end, { buffer = true, desc = 'Open quickfix item in a new vertical split' })
 
 vim.keymap.set('n', '<C-s>', function()
   open_quickfix 'split'
-end, { buffer = true })
+end, { buffer = true, desc = 'Open quickfix item in a new horizontal split' })
 
 vim.keymap.set('n', '<C-t>', function()
   open_quickfix 'tabnew'
-end, { buffer = true, desc = 'Open quickfix item in new tab' })
+end, { buffer = true, desc = 'Open quickfix item in a new tab' })
 
 local function remove_qf_items(start_line, end_line)
   local qf_list = vim.fn.getqflist()
