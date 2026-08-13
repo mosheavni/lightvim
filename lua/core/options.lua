@@ -99,7 +99,8 @@ vim.o.undofile = true
 vim.o.undodir = vim.fn.stdpath 'state' .. '/undo' -- Undo directory
 vim.o.undolevels = 10000
 vim.o.shada = [[!,'1000,s10000,h]]
-vim.opt.path:append { '**' }
+-- '**' alone skips dot-directories; these two cover hidden dirs at any depth
+vim.opt.path:append { '**', '.*/**', '**/.*/**' }
 
 -- Create undo directory if it doesn't exist
 local undodir = vim.fn.stdpath 'state' .. '/undo'
@@ -116,7 +117,7 @@ vim.o.timeoutlen = 400 -- Faster key sequence completion (default is 1000ms)
 vim.o.wildmenu = true
 vim.opt.wildmode = { 'noselect' }
 vim.opt.wildoptions:append { 'fuzzy', 'pum' } -- Enable fuzzy matching and popup menu
-vim.opt.wildignore:append { '**/node_modules/**', '.hg', '.git', '.svn', '*.DS_Store', '*.pyc' }
+vim.opt.wildignore:append { '**/node_modules/**', '**/.hg/**', '**/.git/**', '**/.svn/**', '*.DS_Store', '*.pyc' }
 vim.o.previewheight = 15
 vim.o.history = 10000
 
