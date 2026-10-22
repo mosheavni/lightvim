@@ -40,7 +40,6 @@ vim.schedule(function()
   vim.keymap.set('n', '<leader>o', '<cmd>Pick explorer<cr>', { desc = 'File explorer' })
   vim.keymap.set('n', '<F4>', '<cmd>Pick git_branches<cr>', { desc = 'Git branches' })
   vim.keymap.set('n', '<leader>fi', '<cmd>Pick oldfiles current_dir=true<cr>', { desc = 'Recent files' })
-  vim.keymap.set('n', 'z=', '<cmd>Pick spellsuggest<cr>', { desc = 'Spell suggest' })
 
   require('mini.surround').setup {}
   vim.keymap.set('n', 'saa', 'sa_', { remap = true })
