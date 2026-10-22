@@ -19,5 +19,4 @@ vim.schedule(function()
   require 'plugins.fugitive'
   require 'plugins.gitsigns'
   require 'plugins.kubectl'
-  vim.pack.add { 'https://github.com/b0o/schemastore.nvim' }
 end)
