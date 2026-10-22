@@ -76,7 +76,7 @@ vim.api.nvim_create_autocmd('FileType', {
       end
       vim.api.nvim_feedkeys(':!rm ' .. vim.fn.fnameescape(path), 'n', true)
     end, { buffer = buf, desc = 'Populate :!rm for entry under cursor' })
-    map('n', 'a', function()
+    map('n', '%', function()
       vim.api.nvim_feedkeys(':edit %/', 'n', true)
     end, { buffer = buf, desc = 'Populate :edit %/ to add a new file' })
     map('n', 'r', function()
