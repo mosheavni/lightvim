@@ -52,9 +52,7 @@ map('n', '<C-k>', '<C-w>k', { remap = true, desc = 'Go to Upper Window' })
 map('n', '<C-l>', '<C-w>l', { remap = true, desc = 'Go to Right Window' })
 
 -- Dir
-map('n', '<leader>v', function()
-  require('nvim.dir')._open_parent()
-end, { desc = "Open dir of the current file" })
+map('n', '<leader>v', '<Plug>(nvim-dir-up)', { desc = 'Open dir of the current file' })
 
 -- Dir listing file operations
 local function dir_entry_path()
