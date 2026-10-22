@@ -95,7 +95,6 @@ vim.o.backup = false      -- Don't create backup files
 vim.o.writebackup = false -- Don't create backup before writing
 vim.o.swapfile = false
 vim.o.undofile = true
-vim.o.undodir = vim.fn.stdpath 'state' .. '/undo' -- Undo directory
 vim.o.undolevels = 10000
 vim.o.shada = [[!,'1000,s10000,h]]
 -- '**' alone skips dot-directories; these two cover hidden dirs at any depth

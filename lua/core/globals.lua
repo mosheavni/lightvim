@@ -1,4 +1,4 @@
--- Performance: Defer filetype detection for faster startup (if not set elsewhere)
+-- Performance: cache byte-compiled Lua modules (opt-in)
 vim.loader.enable()
 vim.g.mapleader = vim.keycode '<space>'
 vim.g.maplocalleader = vim.keycode '<cr>'

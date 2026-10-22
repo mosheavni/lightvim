@@ -68,7 +68,7 @@ vim.schedule(function()
   }
   vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#76D1A3' })
   vim.api.nvim_create_autocmd('FileType', {
-    pattern = { 'dashboard', 'floaterm', 'fugitive', 'help', 'lazy', 'lazyterm', 'mason', 'notify', 'trouble', 'Trouble', 'input' },
+    pattern = { 'fugitive', 'help', 'input' },
     callback = function()
       vim.b.miniindentscope_disable = true
     end,

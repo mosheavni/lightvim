@@ -11,7 +11,7 @@ vim.diagnostic.config {
       [vim.diagnostic.severity.INFO] = ' ',
     },
   },
-  float = { border = 'rounded', source = 'if_many' },
+  float = { source = 'if_many' },
   underline = { severity = { min = vim.diagnostic.severity.WARN } },
   virtual_lines = { current_line = true, overflow = 'wrap' },
   jump = {

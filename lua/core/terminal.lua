@@ -52,16 +52,7 @@ local function FloatingTerminal()
   vim.api.nvim_set_hl(0, 'FloatingTermBorder', { bg = 'none' })
 
   -- Start terminal if not already running
-  local has_terminal = false
-  local lines = vim.api.nvim_buf_get_lines(terminal_state.buf, 0, -1, false)
-  for _, line in ipairs(lines) do
-    if line ~= '' then
-      has_terminal = true
-      break
-    end
-  end
-
-  if not has_terminal then
+  if vim.bo[terminal_state.buf].buftype ~= 'terminal' then
     vim.fn.jobstart(os.getenv 'SHELL' or 'zsh', { term = true })
   end
 
