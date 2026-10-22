@@ -22,5 +22,4 @@ return {
       settings.json.schemas = schemastore.json.schemas()
     end
   end,
-  single_file_support = true,
 }
