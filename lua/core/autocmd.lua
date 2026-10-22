@@ -67,16 +67,8 @@ vim.api.nvim_create_autocmd('BufWritePost', {
   end,
 })
 
--- Reload the file when it changed outside of Neovim
-vim.api.nvim_create_autocmd({ 'FocusGained', 'TermClose', 'TermLeave' }, {
-  group = group,
-  desc = 'Check if the file changed when regaining focus',
-  callback = function()
-    if vim.o.buftype ~= 'nofile' then
-      vim.cmd 'checktime'
-    end
-  end,
-})
+-- 'autoread' (default on) detects external changes in real time via file
+-- system watchers since 0.13; this only surfaces a notice when it reloads
 vim.api.nvim_create_autocmd('FileChangedShellPost', {
   group = group,
   desc = 'Reload when the file is changed outside of Neovim',

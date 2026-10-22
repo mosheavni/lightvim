@@ -89,7 +89,6 @@ vim.opt.listchars = { -- NOTE: using `vim.opt` instead of `vim.o` to pass rich o
 }
 
 -- File & Buffer Management
-vim.o.autoread = true
 vim.o.autowrite = false   -- Don't auto save
 vim.o.hidden = true
 vim.o.backup = false      -- Don't create backup files
