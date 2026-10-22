@@ -6,7 +6,7 @@ local lsp_servers = {
   { name = 'cssls', binary = 'vscode-css-language-server', install = 'npm install -g vscode-langservers-extracted' },
   { name = 'dockerls', binary = 'docker-langserver', install = 'npm install -g dockerfile-language-server-nodejs' },
   { name = 'html', binary = 'vscode-html-language-server', install = 'npm install -g vscode-langservers-extracted' },
-  { name = 'jsonls', binary = 'vscode-json-languageserver', install = 'npm install -g vscode-json-languageserver' },
+  { name = 'jsonls', binary = 'vscode-json-language-server', install = 'npm install -g vscode-langservers-extracted' },
   { name = 'lua_ls', binary = 'lua-language-server', install = 'brew install lua-language-server' },
   { name = 'marksman', binary = 'marksman', install = 'brew install marksman' },
   { name = 'pyright', binary = 'pyright-langserver', install = 'npm install -g pyright' },

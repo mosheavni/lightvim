@@ -1,6 +1,6 @@
 ---@type vim.lsp.Config
 return {
-  cmd = { 'vscode-json-languageserver', '--stdio' },
+  cmd = { 'vscode-json-language-server', '--stdio' },
   filetypes = { 'json', 'jsonc' },
   root_markers = { '.git' },
   settings = {
@@ -8,7 +8,7 @@ return {
       validate = { enable = true },
     },
   },
-  on_new_config = function(config)
+  before_init = function(_, config)
     local ok, schemastore = pcall(require, 'schemastore')
     if ok then
       config.settings.json.schemas = schemastore.json.schemas()
