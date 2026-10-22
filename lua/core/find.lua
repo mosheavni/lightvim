@@ -1,4 +1,4 @@
-function _G.native_find(text, _)
+local function native_find(text, _)
   local files = vim.fn.globpath(vim.o.path, "*", false, true)
   local seen, result = {}, {}
   for _, f in ipairs(files) do
@@ -13,6 +13,6 @@ function _G.native_find(text, _)
   return vim.fn.matchfuzzy(result, text)
 end
 
-vim.opt.findfunc = "v:lua.native_find"
+vim.o.findfunc = native_find
 
 vim.keymap.set("n", "<leader>fn", ":find ", { silent = false })

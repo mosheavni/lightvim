@@ -39,17 +39,11 @@ local function remove_qf_items(start_line, end_line)
   vim.cmd 'copen'
 end
 
--- Operator function for removing quickfix items
-_G.op = _G.op or {}
-function _G.op.qf_delete_operator(_)
-  local start_line = vim.fn.line "'["
-  local end_line = vim.fn.line "']"
-  remove_qf_items(start_line, end_line)
-end
-
 -- Set up the operator mapping
 vim.keymap.set('n', 'd', function()
-  vim.o.operatorfunc = 'v:lua.op.qf_delete_operator'
+  vim.o.operatorfunc = function()
+    remove_qf_items(vim.fn.line "'[", vim.fn.line "']")
+  end
   return 'g@'
 end, { expr = true, buffer = true, desc = 'Delete quickfix items' })
 
