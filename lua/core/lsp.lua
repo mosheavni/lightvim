@@ -33,13 +33,6 @@ vim.api.nvim_create_autocmd('LspAttach', {
       vim.cmd 'copen'
     end, { buffer = args.buf, desc = 'Diagnostics to quickfix' })
 
-    if client:supports_method 'textDocument/implementation' then
-      vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, {
-        buffer = args.buf,
-        desc = 'Go to implementation',
-      })
-    end
-
     require 'core.completion' (client, args.buf)
 
     -- Auto-format ("lint") on save.
@@ -121,14 +114,3 @@ vim.lsp.enable {
   'tsgo',
   'yaml_ls',
 }
-
-vim.api.nvim_create_user_command('LspInfo', function()
-  local clients = vim.lsp.get_clients { bufnr = 0 }
-  if #clients == 0 then
-    print 'No LSP clients attached to current buffer'
-  else
-    for _, client in ipairs(clients) do
-      print('LSP: ' .. client.name .. ' (ID: ' .. client.id .. ')')
-    end
-  end
-end, { desc = 'Show LSP client info' })
