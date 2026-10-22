@@ -16,9 +16,6 @@ local modes = {
   ['\19'] = 'S-BLOCK',
 }
 
-local diag_labels = { ' ', ' ', ' ', ' ' }
-local diag_hls = { 'DiagnosticError', 'DiagnosticWarn', 'DiagnosticInfo', 'DiagnosticHint' }
-
 local function set_statusline_highlights()
   local pmenu_sel = vim.api.nvim_get_hl(0, { name = 'PmenuSel', link = false })
   local directory = vim.api.nvim_get_hl(0, { name = 'Directory', link = false })
@@ -40,12 +37,10 @@ function _G.lightvim_statusline()
     and ('%#StlGit# ' .. branch .. (status and status ~= '' and ' ' .. status or '') .. ' %*')
     or ''
 
-  local diag = ''
-  local counts = vim.diagnostic.count(0)
-  for i = 1, 4 do
-    if counts[i] and counts[i] > 0 then
-      diag = diag .. '%#' .. diag_hls[i] .. '#' .. diag_labels[i] .. counts[i] .. '%* '
-    end
+  -- Per-severity colored segments using the icons from vim.diagnostic.config signs
+  local diag = vim.diagnostic.status()
+  if diag ~= '' then
+    diag = diag .. ' '
   end
 
   local clients = {}

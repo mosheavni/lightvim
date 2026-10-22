@@ -1,8 +1,16 @@
 -- :h lsp-config
-
 vim.diagnostic.config {
   update_in_insert = false,
   severity_sort = true,
+  -- Also used by vim.diagnostic.status() in the statusline
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = '✘',
+      [vim.diagnostic.severity.WARN] = '',
+      [vim.diagnostic.severity.HINT] = ' ',
+      [vim.diagnostic.severity.INFO] = ' ',
+    },
+  },
   float = { border = 'rounded', source = 'if_many' },
   underline = { severity = { min = vim.diagnostic.severity.WARN } },
   virtual_lines = { current_line = true, overflow = 'wrap' },
